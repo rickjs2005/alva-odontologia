@@ -1,0 +1,108 @@
+.secao {
+  position: relative;
+  z-index: 1;
+  background: var(--azul);
+  padding-block: clamp(88px, 14vh, 168px);
+  overflow: hidden;
+}
+
+.titulo {
+  margin-top: 20px;
+  max-width: 18ch;
+  margin-bottom: clamp(52px, 8vh, 92px);
+}
+
+.linha {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  padding-top: 46px;
+}
+
+/* trilho e preenchimento */
+.trilho,
+.preenche {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1px;
+}
+
+.trilho {
+  width: 100%;
+  background: rgba(15, 76, 129, 0.2);
+}
+
+.preenche {
+  width: 100%;
+  background: var(--petroleo);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.item {
+  position: relative;
+}
+
+.ponto {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--petroleo);
+  background: var(--azul);
+  transition: background-color 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.aceso .ponto {
+  background: var(--petroleo);
+  transform: scale(1.35);
+}
+
+.ordem {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ouro-texto);
+}
+
+.nome {
+  margin-top: 12px;
+  font-family: var(--display), Georgia, serif;
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  line-height: 1.12;
+}
+
+.texto {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: rgba(32, 33, 36, 0.66);
+  max-width: 30ch;
+}
+
+@media (max-width: 899px) {
+  .linha {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-top: 0;
+    padding-left: 28px;
+  }
+  .trilho,
+  .preenche {
+    top: 6px;
+    left: 4px;
+    width: 1px;
+    height: calc(100% - 6px);
+  }
+  .preenche {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  .ponto {
+    top: 6px;
+    left: -28px;
+  }
+}

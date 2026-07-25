@@ -1,0 +1,77 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 22px;
+  background: var(--grafite);
+  transition: opacity 0.7s var(--ease), visibility 0.7s;
+}
+
+.saindo {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.marca {
+  font-family: var(--display), Georgia, serif;
+  font-size: clamp(2.6rem, 7vw, 4.2rem);
+  font-weight: 300;
+  letter-spacing: 0.32em;
+  /* letter-spacing empurra tudo para a esquerda; compensa o último vão */
+  text-indent: 0.32em;
+  color: var(--branco);
+  opacity: 0;
+  animation: entra 1s var(--ease) 0.1s forwards;
+}
+
+.arco {
+  width: clamp(120px, 22vw, 190px);
+  overflow: visible;
+}
+
+.traco {
+  fill: none;
+  stroke: var(--ouro);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  animation: desenha 1.8s var(--ease) 0.35s forwards;
+}
+
+.rotulo {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  animation: entra 1s var(--ease) 0.6s forwards;
+}
+
+@keyframes entra {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes desenha {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marca,
+  .rotulo {
+    opacity: 1;
+    animation: none;
+  }
+  .traco {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}

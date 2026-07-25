@@ -1,0 +1,182 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 76px;
+  padding-inline: var(--gutter);
+  color: var(--branco);
+  transition: background-color 0.5s var(--ease), color 0.5s var(--ease),
+    height 0.5s var(--ease), border-color 0.5s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.colada {
+  height: 64px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--grafite);
+  border-bottom-color: rgba(32, 33, 36, 0.07);
+}
+
+.marca {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--display), Georgia, serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.marcaSub {
+  font-family: var(--texto), sans-serif;
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.4vw, 38px);
+  font-size: 0.82rem;
+}
+
+.link {
+  position: relative;
+  padding-block: 6px;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--ouro);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+
+.link:hover::after,
+.link[aria-current="true"]::after {
+  transform: scaleX(1);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding-inline: 22px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: background-color 0.4s var(--ease), color 0.4s var(--ease);
+}
+
+.colada .cta:hover {
+  background: var(--petroleo);
+  border-color: var(--petroleo);
+  color: var(--branco);
+}
+
+.cta:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- mobile ---- */
+.hamburguer {
+  display: none;
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+}
+
+.barra {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.4s var(--ease), opacity 0.3s linear;
+}
+
+.barra + .barra {
+  margin-top: 6px;
+}
+
+.aberto .barra:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.aberto .barra:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.painel {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 var(--gutter);
+  background: var(--grafite);
+  color: var(--branco);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s var(--ease), visibility 0.45s;
+}
+
+.painelAberto {
+  opacity: 1;
+  visibility: visible;
+}
+
+.painelLink {
+  font-family: var(--display), Georgia, serif;
+  font-size: clamp(2rem, 9vw, 3rem);
+  line-height: 1.35;
+}
+
+.painelCta {
+  margin-top: 28px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  height: 52px;
+  padding-inline: 28px;
+  border-radius: 2px;
+  background: var(--petroleo);
+  color: var(--branco);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+@media (max-width: 899px) {
+  .links,
+  .cta {
+    display: none;
+  }
+  /* o botão precisa ficar ACIMA do painel, senão não dá para fechar */
+  .hamburguer {
+    display: grid;
+  }
+  .aberto {
+    color: var(--branco);
+  }
+}

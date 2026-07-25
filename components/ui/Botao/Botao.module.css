@@ -1,0 +1,49 @@
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 2px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: background-color 0.45s var(--ease), color 0.45s var(--ease),
+    border-color 0.45s var(--ease);
+}
+
+.medio {
+  height: 56px;
+  padding-inline: 32px;
+  font-size: 0.9rem;
+}
+
+.gigante {
+  height: 72px;
+  padding-inline: 56px;
+  font-size: 1rem;
+}
+
+.primario {
+  background: var(--petroleo);
+  color: var(--branco);
+}
+
+.primario:hover {
+  background: #0c3d68;
+}
+
+.ghost {
+  border: 1px solid rgba(32, 33, 36, 0.22);
+  color: var(--grafite);
+}
+
+.ghost:hover {
+  border-color: var(--grafite);
+}
+
+.seta {
+  transition: transform 0.45s var(--ease);
+}
+
+.botao:hover .seta {
+  transform: translateX(5px);
+}

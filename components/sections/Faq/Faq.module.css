@@ -1,0 +1,142 @@
+.secao {
+  position: relative;
+  z-index: 1;
+  background: var(--branco);
+  padding-block: clamp(88px, 14vh, 168px);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+.cabeca {
+  grid-column: 1 / span 4;
+}
+
+.titulo {
+  margin-top: 20px;
+  max-width: 12ch;
+}
+
+.apoio {
+  margin-top: 24px;
+  max-width: 28ch;
+  font-size: 0.9rem;
+  color: rgba(32, 33, 36, 0.6);
+}
+
+.lista {
+  grid-column: 6 / span 7;
+  border-top: 1px solid rgba(32, 33, 36, 0.1);
+}
+
+.item {
+  position: relative;
+  border-bottom: 1px solid rgba(32, 33, 36, 0.1);
+}
+
+/* fio dourado do item aberto */
+.item::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 22px;
+  width: 1px;
+  height: 0;
+  background: var(--ouro);
+  transition: height 0.5s var(--ease);
+}
+
+.aberto::before {
+  height: 26px;
+}
+
+.gatilho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding-block: 26px;
+  text-align: left;
+  font-family: var(--display), Georgia, serif;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  line-height: 1.25;
+  transition: color 0.4s var(--ease);
+}
+
+.gatilho:hover {
+  color: var(--petroleo);
+}
+
+.mais {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 6px;
+  position: relative;
+  transition: transform 0.5s var(--ease);
+}
+
+.mais::before,
+.mais::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: currentColor;
+}
+
+.mais::before {
+  width: 14px;
+  height: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.mais::after {
+  width: 1px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+}
+
+.aberto .mais {
+  transform: rotate(45deg);
+  color: var(--ouro-texto);
+}
+
+/* altura animada sem medir nada em JS */
+.painel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.55s var(--ease);
+}
+
+.aberto .painel {
+  grid-template-rows: 1fr;
+}
+
+.interno {
+  overflow: hidden;
+}
+
+.resposta {
+  padding-bottom: 28px;
+  max-width: 56ch;
+  font-size: 0.95rem;
+  color: rgba(32, 33, 36, 0.72);
+}
+
+@media (max-width: 1023px) {
+  .cabeca,
+  .lista {
+    grid-column: 1 / -1;
+  }
+  .lista {
+    margin-top: 40px;
+  }
+  .item::before {
+    left: -12px;
+  }
+}

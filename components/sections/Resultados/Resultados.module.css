@@ -1,0 +1,141 @@
+.secao {
+  position: relative;
+  z-index: 1;
+  background: var(--grafite);
+  color: var(--branco);
+  padding-block: clamp(88px, 14vh, 168px);
+}
+
+.cabeca {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: clamp(36px, 6vh, 64px);
+}
+
+.titulo {
+  margin-top: 20px;
+  max-width: 16ch;
+  color: var(--branco);
+}
+
+.apoio {
+  max-width: 32ch;
+  padding-bottom: 8px;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.comparador {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  max-height: 78vh;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--grafite);
+  touch-action: pan-y;
+  cursor: ew-resize;
+  user-select: none;
+}
+
+.camada {
+  position: absolute;
+  inset: 0;
+}
+
+.foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* a camada de cima é recortada até a posição da alça */
+.antes {
+  clip-path: inset(0 calc(100% - var(--corte, 50%)) 0 0);
+}
+
+.alca {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--corte, 50%);
+  width: 1px;
+  background: var(--ouro);
+  transform: translateX(-0.5px);
+  pointer-events: none;
+}
+
+.puxador {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--ouro);
+  background: rgba(32, 33, 36, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--ouro);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+.comparador:focus-visible .puxador {
+  outline: 2px solid var(--branco);
+  outline-offset: 3px;
+}
+
+.chip {
+  position: absolute;
+  top: 18px;
+  padding: 6px 14px;
+  border-radius: 2px;
+  background: rgba(32, 33, 36, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+
+.chipAntes {
+  left: 18px;
+}
+
+.chipDepois {
+  right: 18px;
+}
+
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.aviso {
+  color: rgba(255, 255, 255, 0.34);
+}
+
+@media (max-width: 899px) {
+  .cabeca {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .comparador {
+    aspect-ratio: 4 / 3;
+  }
+}

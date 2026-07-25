@@ -1,0 +1,39 @@
+.svg {
+  display: block;
+  overflow: visible;
+}
+
+.traco {
+  fill: none;
+  stroke: var(--ouro);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+
+/* ---- modo progresso: fixo no canto inferior direito ---- */
+.progresso {
+  position: fixed;
+  right: clamp(16px, 2.4vw, 30px);
+  bottom: clamp(18px, 2.4vw, 30px);
+  width: clamp(74px, 6.6vw, 96px);
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.42;
+}
+
+.progresso .fundo {
+  stroke: currentColor;
+  opacity: 0.22;
+}
+
+/* ---- modo assinatura: desenha-se ao entrar na viewport ---- */
+.assinatura {
+  width: clamp(200px, 26vw, 320px);
+}
+
+@media (max-width: 767px) {
+  .progresso {
+    display: none;
+  }
+}
