@@ -110,6 +110,9 @@
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 34vw;
     gap: 12px;
+    /* sem dense, os itens de 1 coluna que caem antes de um de 2 deixam meia
+       linha vazia — furo visível em tablet */
+    grid-auto-flow: dense;
   }
   .a,
   .b,

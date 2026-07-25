@@ -23,8 +23,10 @@ for (const larg of LARGURAS) {
     viewport: { width: larg.w, height: larg.h },
     deviceScaleFactor: 1,
   });
-  await pagina.goto(url, { waitUntil: "networkidle" });
-  await pagina.waitForTimeout(3000);
+  // networkidle não serve: no desktop o vídeo usa preload=auto e a rede
+  // nunca fica ociosa
+  await pagina.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
+  await pagina.waitForTimeout(3500);
 
   const alvos = await pagina.evaluate(() => {
     const nos = [...document.querySelectorAll("main > section, footer")];

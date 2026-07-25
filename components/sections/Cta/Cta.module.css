@@ -2,11 +2,11 @@
   position: relative;
   z-index: 1;
   background: var(--branco);
-  min-height: 92vh;
+  min-height: 78vh;
   display: grid;
   place-items: center;
   text-align: center;
-  padding-block: clamp(96px, 16vh, 180px);
+  padding-block: clamp(80px, 12vh, 132px);
 }
 
 .titulo {

@@ -5,7 +5,7 @@ import s from "./Cta.module.css";
 
 export default function Cta() {
   return (
-    <section className={s.secao}>
+    <section className={s.secao} data-secao="Agende">
       <div className="faixa">
         <Reveal>
           <span className="eyebrow">Agende</span>

@@ -159,9 +159,28 @@
   height: 56px;
   background: linear-gradient(
     to bottom,
-    rgba(201, 168, 106, 0.9),
-    rgba(201, 168, 106, 0)
+    rgba(201, 168, 106, 0),
+    rgba(201, 168, 106, 0.9)
   );
+}
+
+.seta {
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--ouro);
+  animation: desce 2.4s var(--ease) infinite;
+}
+
+@keyframes desce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(5px);
+    opacity: 0.45;
+  }
 }
 
 @keyframes surge {

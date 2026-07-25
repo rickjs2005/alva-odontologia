@@ -11,20 +11,63 @@
   stroke-linecap: round;
 }
 
-/* ---- modo progresso: fixo no canto inferior direito ---- */
+/* ---- modo progresso ----
+   Antes era só o arco solto no canto e lia como risco perdido. Agora vem
+   fechado por uma base e acompanhado do nome da seção: vira instrumento,
+   não enfeite. */
+/* pastilha: solto sobre o conteúdo o rótulo colidia com o texto das seções.
+   Com fundo próprio ele vira instrumento flutuante e nunca briga. */
 .progresso {
   position: fixed;
-  right: clamp(16px, 2.4vw, 30px);
-  bottom: clamp(18px, 2.4vw, 30px);
-  width: clamp(74px, 6.6vw, 96px);
+  right: clamp(18px, 2.6vw, 34px);
+  bottom: clamp(18px, 2.6vw, 34px);
   z-index: 40;
   pointer-events: none;
-  opacity: 0.42;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(32, 33, 36, 0.06);
 }
 
-.progresso .fundo {
-  stroke: currentColor;
-  opacity: 0.22;
+.rotulo {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ouro-texto);
+  white-space: nowrap;
+  transition: opacity 0.4s var(--ease);
+}
+
+.desenho {
+  width: clamp(64px, 6vw, 86px);
+  flex: none;
+}
+
+.fundo {
+  opacity: 0.26;
+}
+
+.base {
+  stroke: var(--ouro);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.26;
+}
+
+/* sobre as seções escuras a pastilha inverte */
+.escuro {
+  background: rgba(32, 33, 36, 0.72);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.escuro .rotulo {
+  color: var(--ouro);
 }
 
 /* ---- modo assinatura: desenha-se ao entrar na viewport ---- */
@@ -32,7 +75,7 @@
   width: clamp(200px, 26vw, 320px);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .progresso {
     display: none;
   }

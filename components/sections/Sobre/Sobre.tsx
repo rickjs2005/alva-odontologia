@@ -46,7 +46,7 @@ export default function Sobre() {
   }, []);
 
   return (
-    <section id="sobre" className={s.sobre}>
+    <section id="sobre" className={s.sobre} data-secao="A clínica">
       <div className="faixa">
         <div className={s.grade}>
           <div className={s.midia}>

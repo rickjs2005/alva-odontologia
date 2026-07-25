@@ -1,19 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Reveal from "@/components/ui/Reveal/Reveal";
+import { CASOS } from "@/lib/conteudo";
 import { prefersReducedMotion } from "@/lib/motion";
 import s from "./Resultados.module.css";
 
-/** Comparador antes/depois.
- *  A posição vive em ref + variável CSS, nunca em state: mover a alça
+/** Comparador antes/depois, três casos.
+ *  A posição da alça vive em ref + variável CSS, nunca em state: mover a alça
  *  re-renderizando a árvore a cada pointermove engasga. */
 export default function Resultados() {
   const caixa = useRef<HTMLDivElement>(null);
   const valor = useRef(50);
   const arrastando = useRef(false);
   const demoFeita = useRef(false);
+  const [caso, setCaso] = useState(0);
+
+  const atual = CASOS[caso];
 
   const aplicar = useCallback((v: number) => {
     const limitado = Math.max(0, Math.min(100, v));
@@ -34,9 +38,10 @@ export default function Resultados() {
     [aplicar]
   );
 
+  // trocar de caso devolve a alça ao meio
   useEffect(() => {
     aplicar(50);
-  }, [aplicar]);
+  }, [aplicar, caso]);
 
   // auto-demo: ensina o gesto sem tooltip, uma vez só
   useEffect(() => {
@@ -54,7 +59,6 @@ export default function Resultados() {
         const passo = (agora: number) => {
           if (arrastando.current) return;
           const t = Math.min(1, (agora - inicio) / dur);
-          // vai a 68% e volta
           const onda = Math.sin(t * Math.PI);
           aplicar(50 + onda * 18);
           if (t < 1) requestAnimationFrame(passo);
@@ -116,7 +120,7 @@ export default function Resultados() {
   };
 
   return (
-    <section id="resultados" className={s.secao}>
+    <section id="resultados" className={s.secao} data-secao="Resultados">
       <div className="faixa">
         <div className={s.cabeca}>
           <div>
@@ -124,65 +128,87 @@ export default function Resultados() {
               <span className="eyebrow">Resultados</span>
             </Reveal>
             <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
-              Facetas em seis dentes, oito semanas.
+              Veja de perto.
             </Reveal>
           </div>
-          <Reveal as="p" delay={0.12} className={s.apoio}>
-            Arraste para comparar. O desenho foi aprovado em provisório antes de
-            qualquer desgaste.
+
+          <Reveal delay={0.12}>
+            <div className={s.chips} role="tablist" aria-label="Casos clínicos">
+              {CASOS.map((c, i) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  role="tab"
+                  id={`caso-${c.id}`}
+                  aria-selected={i === caso}
+                  aria-controls="painel-caso"
+                  className={`${s.chip} ${i === caso ? s.chipAtivo : ""}`}
+                  onClick={() => setCaso(i)}
+                >
+                  {c.chip}
+                </button>
+              ))}
+            </div>
           </Reveal>
         </div>
 
-        <Reveal modo="blur" delay={0.1}>
-          <div
-            ref={caixa}
-            className={s.comparador}
-            role="slider"
-            tabIndex={0}
-            aria-label="Comparação antes e depois do tratamento"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={50}
-            aria-valuetext="Metade antes, metade depois"
-            onKeyDown={aoTeclar}
-          >
-            <div className={s.camada}>
-              <Image
-                className={s.foto}
-                src="/img/depois.webp"
-                alt="Sorriso depois do tratamento: dentes alinhados e uniformes"
-                width={1264}
-                height={848}
-                sizes="(max-width: 1440px) 100vw, 1440px"
-              />
+        <div id="painel-caso" role="tabpanel" aria-labelledby={`caso-${atual.id}`}>
+          <p className={s.casoTitulo}>{atual.titulo}</p>
+          <p className={s.casoApoio}>{atual.apoio}</p>
+
+          <Reveal modo="blur" delay={0.06}>
+            <div
+              ref={caixa}
+              className={s.comparador}
+              role="slider"
+              tabIndex={0}
+              aria-label={`Comparação antes e depois: ${atual.chip}`}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={50}
+              aria-valuetext="Metade antes, metade depois"
+              onKeyDown={aoTeclar}
+            >
+              <div className={s.camada}>
+                <Image
+                  key={`${atual.id}-depois`}
+                  className={s.foto}
+                  src={atual.depois}
+                  alt={atual.altDepois}
+                  width={1264}
+                  height={848}
+                  sizes="(max-width: 1440px) 100vw, 1440px"
+                />
+              </div>
+
+              <div className={`${s.camada} ${s.antes}`}>
+                <Image
+                  key={`${atual.id}-antes`}
+                  className={s.foto}
+                  src={atual.antes}
+                  alt={atual.altAntes}
+                  width={1264}
+                  height={848}
+                  sizes="(max-width: 1440px) 100vw, 1440px"
+                />
+              </div>
+
+              <span className={`${s.rotulo} ${s.rotuloAntes}`}>Antes</span>
+              <span className={`${s.rotulo} ${s.rotuloDepois}`}>Depois</span>
+
+              <span className={s.alca} aria-hidden>
+                <span className={s.puxador}>⟷</span>
+              </span>
             </div>
+          </Reveal>
 
-            <div className={`${s.camada} ${s.antes}`}>
-              <Image
-                className={s.foto}
-                src="/img/antes.webp"
-                alt="Sorriso antes do tratamento: dentes desalinhados, com diastema"
-                width={1264}
-                height={848}
-                sizes="(max-width: 1440px) 100vw, 1440px"
-              />
-            </div>
-
-            <span className={`${s.chip} ${s.chipAntes}`}>Antes</span>
-            <span className={`${s.chip} ${s.chipDepois}`}>Depois</span>
-
-            <span className={s.alca} aria-hidden>
-              <span className={s.puxador}>⟷</span>
+          <p className={s.legenda}>
+            <span>{atual.paciente}</span>
+            <span className={s.aviso}>
+              Caso ilustrativo. Resultados variam conforme o caso clínico.
             </span>
-          </div>
-        </Reveal>
-
-        <p className={s.legenda}>
-          <span>Paciente, 34 anos · facetas em porcelana</span>
-          <span className={s.aviso}>
-            Caso ilustrativo. Resultados variam conforme o caso clínico.
-          </span>
-        </p>
+          </p>
+        </div>
       </div>
     </section>
   );

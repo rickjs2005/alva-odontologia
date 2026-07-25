@@ -5,7 +5,11 @@ import s from "./Especialidades.module.css";
 
 export default function Especialidades() {
   return (
-    <section id="especialidades" className={s.secao}>
+    <section
+      id="especialidades"
+      className={s.secao}
+      data-secao="Especialidades"
+    >
       <div className="faixa">
         <div className={s.cabeca}>
           <div>
@@ -13,7 +17,7 @@ export default function Especialidades() {
               <span className="eyebrow">O que fazemos</span>
             </Reveal>
             <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
-              Seis frentes, um critério só.
+              O que dá pra resolver aqui.
             </Reveal>
           </div>
           <Reveal as="p" delay={0.12} className={s.apoio}>

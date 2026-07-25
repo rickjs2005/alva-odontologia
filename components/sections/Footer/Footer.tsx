@@ -73,6 +73,19 @@ export default function Footer() {
               <rect className={s.mapaQuadra} x="220" y="160" width="156" height="120" />
               <path className={s.mapaTraco} d="M0 138h400M196 0v300" />
               <path className={s.mapaTraco} d="M0 60h24M376 60h24M0 220h24" />
+              {/* os nomes de via são o que faz a planta ler como mapa e não
+                  como textura */}
+              <text className={s.mapaVia} x="14" y="132">
+                R. DR. MELO ALVES
+              </text>
+              <text
+                className={s.mapaVia}
+                x="190"
+                y="24"
+                transform="rotate(90 190 24)"
+              >
+                AL. LORENA
+              </text>
             </svg>
             <span className={s.mapaVeu} aria-hidden />
             <span className={s.pino} aria-hidden />

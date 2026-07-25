@@ -37,16 +37,16 @@ export function IconeImplantes({ classeTraco, ...p }: Props) {
   );
 }
 
-/** Dente com a escala de tom subindo em três degraus. */
+/** Escala de tom: quatro lâminas subindo, e o brilho.
+ *  Era um dente com listras — silhueta idêntica à de Facetas a distância. */
 export function IconeClareamento({ classeTraco, ...p }: Props) {
   return (
     <svg {...base} {...p}>
-      <path
-        {...traco(classeTraco)}
-        d="M24 11c-5.5 0-9 3.6-9 9 0 6.3 1.8 11.7 3.6 15.3.9 1.8 3 1.7 3.7-.2l1.4-4c.3-.8 1.3-.8 1.6 0l1.4 4c.7 1.9 2.8 2 3.7.2C31.2 31.7 33 26.3 33 20c0-5.4-3.5-9-9-9Z"
-      />
-      <path {...traco(classeTraco)} d="M19.5 20.5h4M19.5 25h6M19.5 29.5h3" />
-      <path {...traco(classeTraco)} d="M33.5 13.5v5M31 16h5" />
+      <path {...traco(classeTraco)} d="M10 32h5.4v8H10z" />
+      <path {...traco(classeTraco)} d="M17.9 27h5.4v13h-5.4z" />
+      <path {...traco(classeTraco)} d="M25.8 22h5.4v18h-5.4z" />
+      <path {...traco(classeTraco)} d="M33.7 17h5.4v23h-5.4z" />
+      <path {...traco(classeTraco)} d="M36.4 8v5M33.6 10.5h5.6" />
     </svg>
   );
 }
@@ -89,17 +89,19 @@ export function IconeOrtodontia({ classeTraco, ...p }: Props) {
   );
 }
 
-/** Perfil facial reduzido a três linhas e o eixo de proporção. */
+/** Rosto de frente com as linhas de proporção — lê como análise facial.
+ *  O perfil anterior era abstrato demais para ser lido sem a legenda. */
 export function IconeHarmonizacao({ classeTraco, ...p }: Props) {
   return (
     <svg {...base} {...p}>
       <path
         {...traco(classeTraco)}
-        d="M30 9c-6.2 1.4-10.4 6.2-10.4 12.2 0 2.4.7 4 .7 5.2 0 1.1-1.4 1.6-1.4 2.7 0 1 .9 1.4 2.1 1.6 0 3.2.3 5.6 1.6 7.1 1.6 1.9 4.5 2.2 7.4 2.2"
+        d="M24 8c-7.2 0-11.6 4.6-11.6 11.4 0 6 1.9 11 4.6 14.6C19.3 37.2 21.6 40 24 40s4.7-2.8 7-6c2.7-3.6 4.6-8.6 4.6-14.6C35.6 12.6 31.2 8 24 8Z"
       />
-      <path {...traco(classeTraco)} d="M23.4 31.6c1.7 1 3.6 1 5.3 0" />
-      <path {...traco(classeTraco)} d="M36 12v24" />
-      <circle {...traco(classeTraco)} cx="36" cy="24" r="2" />
+      <path {...traco(classeTraco)} d="M14 18.5h20M14.6 27h18.8" />
+      <path {...traco(classeTraco)} d="M24 8v32" />
+      <circle {...traco(classeTraco)} cx="18.6" cy="18.5" r="1.6" />
+      <circle {...traco(classeTraco)} cx="29.4" cy="18.5" r="1.6" />
     </svg>
   );
 }

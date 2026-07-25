@@ -15,7 +15,13 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  align-items: start;
+  /* stretch, não start: com alturas livres a borda de baixo virava um
+     zigue-zague sem intenção */
+  align-items: stretch;
+}
+
+.grade > * {
+  display: flex;
 }
 
 /* o do meio desce: quebra a simetria de template */
@@ -25,9 +31,9 @@
 
 .card {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 24px;
-  height: 100%;
   padding: clamp(28px, 3vw, 40px);
   background: var(--branco);
   border: 1px solid rgba(32, 33, 36, 0.07);
@@ -58,21 +64,27 @@
   padding-top: 8px;
 }
 
+/* 52px fazia da foto um enfeite. Num site cuja tese é confiança, o rosto
+   precisa ter peso. */
 .retrato {
-  width: 52px;
-  height: 52px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   object-fit: cover;
   flex: none;
 }
 
+.pessoa {
+  gap: 18px;
+}
+
 .nome {
-  font-size: 0.9rem;
+  font-size: 0.98rem;
   font-weight: 500;
 }
 
 .detalhe {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: rgba(32, 33, 36, 0.55);
 }
 

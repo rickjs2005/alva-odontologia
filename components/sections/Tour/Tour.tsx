@@ -18,7 +18,7 @@ export default function Tour() {
   };
 
   return (
-    <section id="tour" className={s.secao}>
+    <section id="tour" className={s.secao} data-secao="Tour">
       <div className="faixa">
         <Reveal>
           <span className="eyebrow">A clínica por dentro</span>

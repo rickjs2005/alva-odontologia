@@ -29,7 +29,7 @@ export default function Jornada() {
 
     // o SVG ocupa só a faixa de cima do palco (ver CSS), então o y do path
     // precisa ser reescalado para a caixa inteira
-    const FATOR = 0.634;
+    const FATOR = 0.699;
 
     const medir = () => {
       const total = path.getTotalLength();
@@ -72,7 +72,7 @@ export default function Jornada() {
   }, []);
 
   return (
-    <section className={s.secao}>
+    <section className={s.secao} data-secao="A jornada">
       <div className="faixa">
         <div className={s.cabeca}>
           <Reveal>

@@ -44,13 +44,13 @@ export default function Diferenciais() {
   }, []);
 
   return (
-    <section className={s.secao}>
+    <section className={s.secao} data-secao="Tecnologia">
       <div className="faixa">
         <Reveal>
           <span className="eyebrow">Como trabalhamos</span>
         </Reveal>
         <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
-          Quatro coisas que mudam a consulta.
+          Nada disso é vitrine.
         </Reveal>
 
         <div ref={linha} className={s.linha}>

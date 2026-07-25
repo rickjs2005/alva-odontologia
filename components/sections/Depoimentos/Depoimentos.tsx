@@ -5,13 +5,13 @@ import s from "./Depoimentos.module.css";
 
 export default function Depoimentos() {
   return (
-    <section className={s.secao}>
+    <section className={s.secao} data-secao="Depoimentos">
       <div className="faixa">
         <Reveal>
           <span className="eyebrow">Quem passou por aqui</span>
         </Reveal>
         <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
-          Três histórias, sem edição.
+          Ninguém aqui foi orientado sobre o que dizer.
         </Reveal>
 
         <div className={s.grade}>
@@ -27,9 +27,9 @@ export default function Depoimentos() {
                     className={s.retrato}
                     src={d.foto}
                     alt={`Retrato de ${d.nome}`}
-                    width={104}
-                    height={104}
-                    sizes="52px"
+                    width={168}
+                    height={168}
+                    sizes="84px"
                   />
                   <span>
                     <span className={s.nome}>{d.nome}</span>

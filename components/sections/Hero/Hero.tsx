@@ -64,7 +64,12 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={raiz} className={s.hero} aria-label="Apresentação">
+    <section
+      ref={raiz}
+      className={s.hero}
+      aria-label="Apresentação"
+      data-secao="O filme"
+    >
       <div ref={palco} className={s.palco}>
         <div className={s.conteudo}>
           <span className={`eyebrow ${s.eyebrow}`}>
@@ -115,9 +120,10 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* só o fio e a seta: "ROLE" em caixa alta ficava ambíguo */}
         <div className={s.rolar} aria-hidden>
           <span className={s.fio} />
-          role
+          <span className={s.seta}>↓</span>
         </div>
       </div>
     </section>

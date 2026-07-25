@@ -11,8 +11,69 @@
   gap: 24px;
 }
 
+/* sticky: a coluna tinha ~400px de sobra e o texto sumia enquanto se lia o
+   accordion. Agora ela acompanha e termina num convite. */
 .cabeca {
   grid-column: 1 / span 4;
+  position: sticky;
+  top: 120px;
+  align-self: start;
+}
+
+.convite {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(32, 33, 36, 0.1);
+}
+
+.conviteTitulo {
+  font-family: var(--display), Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.conviteTexto {
+  margin-top: 10px;
+  max-width: 26ch;
+  font-size: 0.86rem;
+  color: rgba(32, 33, 36, 0.6);
+}
+
+.conviteAcao {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  height: 46px;
+  padding-inline: 24px;
+  border: 1px solid rgba(32, 33, 36, 0.22);
+  border-radius: 2px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: background-color 0.45s var(--ease), color 0.45s var(--ease),
+    border-color 0.45s var(--ease);
+}
+
+.conviteAcao:hover {
+  background: var(--petroleo);
+  border-color: var(--petroleo);
+  color: var(--branco);
+}
+
+.arcoFaq {
+  margin-top: 36px;
+  width: 132px;
+  color: var(--ouro);
+  overflow: visible;
+}
+
+.arcoFaqTraco {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  opacity: 0.5;
 }
 
 .titulo {
@@ -132,6 +193,12 @@
   .cabeca,
   .lista {
     grid-column: 1 / -1;
+  }
+  .cabeca {
+    position: static;
+  }
+  .arcoFaq {
+    display: none;
   }
   .lista {
     margin-top: 40px;

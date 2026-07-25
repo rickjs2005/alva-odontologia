@@ -133,6 +133,48 @@ export const DEPOIMENTOS = [
   },
 ] as const;
 
+export const CASOS = [
+  {
+    id: "facetas",
+    chip: "Facetas",
+    titulo: "Facetas em seis dentes, oito semanas.",
+    apoio:
+      "O desenho foi aprovado em provisório antes de qualquer desgaste. Nenhum dente foi tocado sem a paciente ver o resultado primeiro.",
+    paciente: "Paciente, 34 anos · facetas em porcelana",
+    antes: "/img/antes.webp",
+    depois: "/img/depois.webp",
+    altAntes:
+      "Sorriso antes das facetas: dentes desalinhados, com espaço entre os incisivos",
+    altDepois:
+      "Sorriso depois das facetas: dentes alinhados, uniformes e sem espaço",
+  },
+  {
+    id: "clareamento",
+    chip: "Clareamento",
+    titulo: "Clareamento em consultório, três sessões.",
+    apoio:
+      "Café de vinte anos não sai numa sessão. Fizemos em três, com dessensibilizante entre elas, porque ele tinha histórico de sensibilidade.",
+    paciente: "Paciente, 45 anos · clareamento em consultório",
+    antes: "/img/antes-2.webp",
+    depois: "/img/depois-2.webp",
+    altAntes: "Sorriso antes do clareamento: dentes escurecidos e acinzentados",
+    altDepois: "Sorriso depois do clareamento: esmalte visivelmente mais claro",
+  },
+  {
+    id: "ortodontia",
+    chip: "Ortodontia",
+    titulo: "Alinhadores, catorze meses.",
+    apoio:
+      "Apinhamento no arco superior, um canino fora da linha. Sem extração — o espaço veio do próprio arco, com desgaste interproximal mínimo.",
+    paciente: "Paciente, 25 anos · alinhadores transparentes",
+    antes: "/img/antes-3.webp",
+    depois: "/img/depois-3.webp",
+    altAntes:
+      "Sorriso antes da ortodontia: dentes apinhados, canino fora do arco",
+    altDepois: "Sorriso depois da ortodontia: arco regular e alinhado",
+  },
+] as const;
+
 export const TOUR = [
   { src: "/img/tour-01.webp", legenda: "Recepção", area: "a" },
   { src: "/img/tour-02.webp", legenda: "Sala de espera", area: "b" },

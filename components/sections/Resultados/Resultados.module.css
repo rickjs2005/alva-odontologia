@@ -11,7 +11,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 40px;
-  margin-bottom: clamp(36px, 6vh, 64px);
+  margin-bottom: clamp(28px, 4vh, 44px);
 }
 
 .titulo {
@@ -20,11 +20,51 @@
   color: var(--branco);
 }
 
-.apoio {
-  max-width: 32ch;
-  padding-bottom: 8px;
-  font-size: 0.92rem;
-  color: rgba(255, 255, 255, 0.6);
+/* chips de caso */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+.chip {
+  height: 40px;
+  padding-inline: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.66);
+  transition: color 0.4s var(--ease), border-color 0.4s var(--ease),
+    background-color 0.4s var(--ease);
+}
+
+.chip:hover {
+  color: var(--branco);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.chipAtivo,
+.chipAtivo:hover {
+  color: var(--grafite);
+  background: var(--ouro);
+  border-color: var(--ouro);
+}
+
+.casoTitulo {
+  font-family: var(--display), Georgia, serif;
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 1.12;
+  max-width: 22ch;
+}
+
+.casoApoio {
+  margin-top: 12px;
+  margin-bottom: clamp(24px, 3.5vh, 40px);
+  max-width: 58ch;
+  font-size: 0.94rem;
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .comparador {
@@ -92,7 +132,7 @@
   outline-offset: 3px;
 }
 
-.chip {
+.rotulo {
   position: absolute;
   top: 18px;
   padding: 6px 14px;
@@ -104,15 +144,15 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.88);
   pointer-events: none;
 }
 
-.chipAntes {
+.rotuloAntes {
   left: 18px;
 }
 
-.chipDepois {
+.rotuloDepois {
   right: 18px;
 }
 
@@ -122,20 +162,26 @@
   gap: 8px 22px;
   margin-top: 20px;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.62);
 }
 
+/* 0.42 não passa AA sobre o grafite — já tinha sido corrigido antes e voltou
+   na reescrita do módulo */
 .aviso {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 @media (max-width: 899px) {
   .cabeca {
     flex-direction: column;
     align-items: flex-start;
-    gap: 18px;
+    gap: 22px;
   }
   .comparador {
     aspect-ratio: 4 / 3;
+  }
+  /* o puxador ficava exatamente sobre os dentes — o assunto da foto */
+  .puxador {
+    top: 76%;
   }
 }
