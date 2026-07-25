@@ -1,3 +1,7 @@
+/* A saída é 100% CSS. Antes ela dependia do React ter hidratado para trocar
+   a classe — e como a tela ficava coberta até lá, o LCP era medido na
+   hidratação (~3s). Agora o CSS solta o hero em ~1,5s, hidrate quando
+   hidratar. */
 .loader {
   position: fixed;
   inset: 0;
@@ -7,10 +11,12 @@
   justify-items: center;
   gap: 22px;
   background: var(--grafite);
-  transition: opacity 0.7s var(--ease), visibility 0.7s;
+  animation: sai 0.5s var(--ease) 1.05s forwards;
 }
 
+/* o JS pode antecipar a saída, nunca atrasá-la */
 .saindo {
+  animation: none;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -25,7 +31,7 @@
   text-indent: 0.32em;
   color: var(--branco);
   opacity: 0;
-  animation: entra 1s var(--ease) 0.1s forwards;
+  animation: entra 0.5s var(--ease) 0.08s forwards;
 }
 
 .arco {
@@ -39,7 +45,7 @@
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
   stroke-linecap: round;
-  animation: desenha 1.8s var(--ease) 0.35s forwards;
+  animation: desenha 0.8s var(--ease) 0.22s forwards;
 }
 
 .rotulo {
@@ -49,7 +55,7 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.4);
   opacity: 0;
-  animation: entra 1s var(--ease) 0.6s forwards;
+  animation: entra 0.5s var(--ease) 0.4s forwards;
 }
 
 @keyframes entra {
@@ -64,14 +70,16 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .marca,
-  .rotulo {
-    opacity: 1;
-    animation: none;
+@keyframes sai {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
-  .traco {
-    stroke-dashoffset: 0;
-    animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    display: none;
   }
 }

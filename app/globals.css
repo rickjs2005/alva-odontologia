@@ -17,8 +17,10 @@
   --grafite: #202124;
   --ouro: #c9a86a;
 
-  /* o ouro em corpo de texto não passa AA — só existe em fio e caixa alta */
-  --ouro-texto: #8a6d33;
+  /* o ouro puro não passa AA como texto. Duas variantes medidas:
+     --ouro-texto para fundos claros, --ouro-claro para fundos escuros. */
+  --ouro-texto: #6f5626;
+  --ouro-claro: #e0c88f;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-texto: 0.9s;

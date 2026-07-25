@@ -89,7 +89,8 @@ export default function Footer() {
                 href={MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Abrir ${ENDERECO_COMPLETO} no Google Maps`}
+                // o nome acessível precisa conter o texto visível do botão
+                aria-label={`Abrir no mapa: ${ENDERECO_COMPLETO}`}
               >
                 Abrir no mapa <span aria-hidden>↗</span>
               </a>

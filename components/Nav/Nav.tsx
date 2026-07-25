@@ -43,7 +43,9 @@ export default function Nav() {
         aberto ? s.aberto : ""
       }`}
     >
-      <a href="#conteudo" className={s.marca} aria-label={`${CLINICA.nome}, início`}>
+      {/* sem aria-label: o nome acessível precisa conter o texto visível, e
+          "ALVA, início" não continha "Odontologia" */}
+      <a href="#conteudo" className={s.marca}>
         {CLINICA.nome}
         <span className={s.marcaSub}>Odontologia</span>
       </a>

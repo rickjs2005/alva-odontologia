@@ -33,7 +33,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.74);
 }
 
 /* ancora no rodapé da coluna: sem isto sobra um vão morto embaixo da marca */
@@ -46,7 +46,7 @@
 .lugar {
   margin-top: 12px;
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .coluna {
@@ -62,7 +62,8 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ouro);
+  /* o ouro puro sobre petróleo fica em 3,8:1 — abaixo de AA */
+  color: var(--ouro-claro);
   margin-bottom: 18px;
 }
 
@@ -92,7 +93,7 @@
 }
 
 .horario span:last-child {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.72);
   font-variant-numeric: tabular-nums;
 }
 
@@ -193,7 +194,7 @@
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   font-size: 0.74rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .rodapinho a {

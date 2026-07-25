@@ -18,28 +18,40 @@ export default function VideoRig() {
     if (!v) return;
 
     const desktop = isDesktop();
+    const pronto = () => window.dispatchEvent(new CustomEvent("alva:pronto"));
+
+    // mobile: o vídeo não scruba, então não precisa competir com o LCP.
+    // Solta o loader no poster e só busca os bytes quando a thread sossega.
+    if (!desktop || prefersReducedMotion()) {
+      pronto();
+      if (prefersReducedMotion()) return;
+
+      const carregar = () => {
+        v.src = "/video/hero.mp4";
+        v.loop = true;
+        v.load();
+        v.play().catch(() => {});
+      };
+      const ocioso =
+        window.requestIdleCallback?.(carregar, { timeout: 2500 }) ??
+        window.setTimeout(carregar, 1200);
+
+      return () => {
+        if (window.cancelIdleCallback) window.cancelIdleCallback(ocioso);
+        else window.clearTimeout(ocioso);
+      };
+    }
+
+    // desktop: o vídeo É o conteúdo, carrega de imediato
     // src fora do JSX: no JSX o browser baixaria as duas fontes
-    v.src = desktop ? "/video/hero-hd.mp4" : "/video/hero.mp4";
+    v.src = "/video/hero-hd.mp4";
     v.load();
 
-    const pronto = () => window.dispatchEvent(new CustomEvent("alva:pronto"));
     if (v.readyState >= 3) pronto();
     else {
       v.addEventListener("canplay", pronto, { once: true });
       // se o vídeo não vier, a página não pode ficar presa no loader
       v.addEventListener("error", pronto, { once: true });
-    }
-
-    // mobile toca em loop; reduced-motion fica no poster
-    if (!desktop || prefersReducedMotion()) {
-      if (!prefersReducedMotion()) {
-        v.loop = true;
-        v.play().catch(() => {});
-      }
-      return () => {
-        v.removeEventListener("canplay", pronto);
-        v.removeEventListener("error", pronto);
-      };
     }
 
     v.pause();
@@ -85,7 +97,7 @@ export default function VideoRig() {
         // metadata, não auto: o browser busca trechos sob demanda conforme o
         // scrub pede, em vez de baixar o arquivo inteiro de cara
         preload="metadata"
-        poster="/video/poster.jpg"
+        poster="/video/poster.webp"
       />
       <div id="alva-scrim" className={s.scrim} />
       <div className={s.vinheta} />

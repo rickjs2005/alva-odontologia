@@ -176,6 +176,27 @@
 }
 
 @media (max-width: 1023px) {
+  /* no mobile o H1 é o elemento de LCP e a revelação por máscara empurrava a
+     métrica para ~3s. Mesma coreografia, tempos mais curtos. */
+  .palavra > i {
+    animation-duration: 0.6s;
+  }
+  .eyebrow,
+  .sub,
+  .acoes,
+  .indicadores {
+    animation-duration: 0.6s;
+  }
+  .sub {
+    animation-delay: 0.5s;
+  }
+  .acoes {
+    animation-delay: 0.6s;
+  }
+  .indicadores {
+    animation-delay: 0.7s;
+  }
+
   .hero {
     height: 100svh;
   }

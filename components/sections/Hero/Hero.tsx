@@ -77,7 +77,7 @@ export default function Hero() {
           <h1 ref={titulo} className={s.titulo}>
             {TITULO.map((p, i) => (
               <span key={`${p}-${i}`} className={s.palavra}>
-                <i style={{ animationDelay: `${0.35 + i * DUR.stagger}s` }}>
+                <i style={{ animationDelay: `${0.18 + i * 0.05}s` }}>
                   {p}
                 </i>
               </span>

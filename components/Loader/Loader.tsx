@@ -4,26 +4,15 @@ import { useEffect, useState } from "react";
 import { PATH_ARCO, VIEWBOX_ARCO } from "@/lib/arco";
 import s from "./Loader.module.css";
 
-/** Sai quando o VideoRig avisa que o vídeo pode tocar — ou depois de 2,5s,
- *  para a página nunca ficar refém de um vídeo que não veio. */
+/** A cortina de entrada. A saída é do CSS (ver módulo) — o JS só serve para
+ *  antecipá-la quando o vídeo fica pronto antes da hora. */
 export default function Loader() {
   const [saindo, setSaindo] = useState(false);
 
   useEffect(() => {
-    let feito = false;
-    const sair = () => {
-      if (feito) return;
-      feito = true;
-      setSaindo(true);
-    };
-
+    const sair = () => setSaindo(true);
     window.addEventListener("alva:pronto", sair, { once: true });
-    const t = window.setTimeout(sair, 2500);
-
-    return () => {
-      window.removeEventListener("alva:pronto", sair);
-      window.clearTimeout(t);
-    };
+    return () => window.removeEventListener("alva:pronto", sair);
   }, []);
 
   return (
