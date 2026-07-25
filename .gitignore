@@ -48,3 +48,6 @@ next-env.d.ts
 
 # ferramentas de agente
 /.claude/
+
+.vercel
+.env*

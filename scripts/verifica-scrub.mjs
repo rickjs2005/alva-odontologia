@@ -23,17 +23,29 @@ const pagina = await navegador.newPage({
 });
 
 await mkdir(SAIDA, { recursive: true });
-await pagina.goto(url, { waitUntil: "networkidle" });
+// nada de networkidle: com preload=auto o vídeo baixa continuamente e a rede
+// nunca fica ociosa
+await pagina.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
 
-// o VideoRig avisa quando o vídeo pode tocar
+// espera o vídeo ter duração e buffer suficiente para o scrub não engasgar
 await pagina
   .waitForFunction(
-    () =>
-      document.querySelector("video")?.readyState >= 2 &&
-      Number.isFinite(document.querySelector("video")?.duration),
-    { timeout: 30000 }
+    () => {
+      const v = document.querySelector("video");
+      if (!v || !Number.isFinite(v.duration) || v.readyState < 2) return false;
+      const fim = v.buffered.length ? v.buffered.end(v.buffered.length - 1) : 0;
+      return fim >= v.duration * 0.9;
+    },
+    { timeout: 90000 }
   )
-  .catch(() => console.warn("aviso: vídeo não ficou pronto no prazo"));
+  .catch(() => console.warn("aviso: buffer não chegou a 90% no prazo"));
+
+const buffer = await pagina.evaluate(() => {
+  const v = document.querySelector("video");
+  const fim = v?.buffered.length ? v.buffered.end(v.buffered.length - 1) : 0;
+  return `${fim.toFixed(1)}s de ${v?.duration.toFixed(1)}s bufferizados`;
+});
+console.log(buffer);
 
 const alturaHero = await pagina.evaluate(() => {
   const s = document.querySelector("section");

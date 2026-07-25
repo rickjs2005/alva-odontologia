@@ -42,7 +42,12 @@ export default function VideoRig() {
       };
     }
 
-    // desktop: o vídeo É o conteúdo, carrega de imediato
+    // desktop: o vídeo É o conteúdo, carrega de imediato.
+    // preload=auto e não metadata: na CDN, cada seek do scrub vira um range
+    // request, e com só os metadados em mãos o vídeo fica minutos atrás do
+    // scroll. Precisa ter os bytes. (No localhost isso não aparece — o disco
+    // responde instantaneamente.)
+    v.preload = "auto";
     // src fora do JSX: no JSX o browser baixaria as duas fontes
     v.src = "/video/hero-hd.mp4";
     v.load();

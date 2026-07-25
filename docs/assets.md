@@ -61,7 +61,12 @@ O Higgsfield sugeriu o preset "IN THE DARK" no primeiro clipe — recusado com
   depois borra os cortes)
 - Grade leve `eq=contrast=1.05:saturation=0.94:gamma=0.98` para unificar
 - `-g 1` — todo frame keyframe. **Sem isso o scrub morre.**
-- 1280×720, CRF 24, `+faststart` → 17,9 MB
+- 1280×720, CRF 29 `preset slow`, `+faststart` → **11,4 MB**
+
+O CRF subiu de 24 para 29 depois da verificação em produção: com 17,9 MB e
+`preload="metadata"`, cada seek do scrub virava um range request na CDN e o
+vídeo ficava minutos atrás do scroll (ao fim do hero tinha andado 10s de 32s).
+Em disco isso não aparece. A correção foi peso menor **e** `preload="auto"`.
 
 Os limites de plano em `lib/scenes.ts` são os centros dos crossfades, por isso
 não são frações redondas.
