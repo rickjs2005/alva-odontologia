@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme {
+  --color-branco: #ffffff;
+  --color-petroleo: #0f4c81;
+  --color-azul: #eaf5ff;
+  --color-cinza: #f7f8fa;
+  --color-grafite: #202124;
+  --color-ouro: #c9a86a;
+}
+
+:root {
+  --branco: #ffffff;
+  --petroleo: #0f4c81;
+  --azul: #eaf5ff;
+  --cinza: #f7f8fa;
+  --grafite: #202124;
+  --ouro: #c9a86a;
+
+  /* o ouro em corpo de texto não passa AA — só existe em fio e caixa alta */
+  --ouro-texto: #8a6d33;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-texto: 0.9s;
+  --dur-imagem: 1.2s;
+
+  --gutter: clamp(20px, 5vw, 96px);
+  --max: 1440px;
+
+  --sombra: 0 1px 2px rgba(32, 33, 36, 0.04), 0 8px 24px rgba(32, 33, 36, 0.04);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  /* interpolado ao longo do scroll pelo FundoProgressivo */
+  background-color: var(--grafite);
+  color: var(--grafite);
+  font-family: var(--texto), system-ui, -apple-system, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--display), "Cormorant Garamond", Georgia, serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.75rem, 7vw, 6.5rem);
+  line-height: 0.98;
+}
+
+h2 {
+  font-size: clamp(2rem, 4.5vw, 4rem);
+}
+
+h3 {
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  line-height: 1.15;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ouro);
+}
+
+/* faixa de conteúdo padrão */
+.faixa {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: var(--branco);
+  color: var(--grafite);
+  padding: 12px 20px;
+  border-radius: 2px;
+}
+
+.skip:focus {
+  left: 12px;
+  top: 12px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--petroleo);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
