@@ -1,0 +1,13 @@
+[0:v]trim=0:5,setpts=PTS-STARTPTS,scale=1280:720,setsar=1,minterpolate=fps=30:mi_mode=mci,eq=contrast=1.05:saturation=0.94:gamma=0.98[v0];
+[1:v]trim=0:5,setpts=PTS-STARTPTS,scale=1280:720,setsar=1,minterpolate=fps=30:mi_mode=mci,eq=contrast=1.05:saturation=0.94:gamma=0.98[v1];
+[2:v]trim=0:5,setpts=PTS-STARTPTS,scale=1280:720,setsar=1,minterpolate=fps=30:mi_mode=mci,eq=contrast=1.05:saturation=0.94:gamma=0.98[v2];
+[3:v]trim=0:5,setpts=PTS-STARTPTS,scale=1280:720,setsar=1,minterpolate=fps=30:mi_mode=mci,eq=contrast=1.05:saturation=0.94:gamma=0.98[v3];
+[4:v]trim=0:5,setpts=PTS-STARTPTS,scale=1280:720,setsar=1,minterpolate=fps=30:mi_mode=mci,eq=contrast=1.05:saturation=0.94:gamma=0.98[v4];
+[5:v]trim=0:5,setpts=PTS-STARTPTS,scale=1280:720,setsar=1,minterpolate=fps=30:mi_mode=mci,eq=contrast=1.05:saturation=0.94:gamma=0.98[v5];
+[6:v]trim=0:5,setpts=PTS-STARTPTS,scale=1280:720,setsar=1,minterpolate=fps=30:mi_mode=mci,eq=contrast=1.05:saturation=0.94:gamma=0.98[v6];
+[v0][v1]xfade=transition=fade:duration=0.4:offset=4.6[x1];
+[x1][v2]xfade=transition=fade:duration=0.4:offset=9.2[x2];
+[x2][v3]xfade=transition=fade:duration=0.4:offset=13.8[x3];
+[x3][v4]xfade=transition=fade:duration=0.4:offset=18.4[x4];
+[x4][v5]xfade=transition=fade:duration=0.4:offset=23.0[x5];
+[x5][v6]xfade=transition=fade:duration=0.4:offset=27.6[saida]
