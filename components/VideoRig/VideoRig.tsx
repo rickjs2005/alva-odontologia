@@ -69,6 +69,18 @@ export default function VideoRig() {
       if (!dur || v.readyState < 2) return;
 
       const alvo = world.progresso;
+
+      // Salto grande (o interlúdio pula do fim do hero para o plano 07):
+      // vai direto. Com damping, o rAF caminharia até lá em ~40 passos, e
+      // cada passo é um seek — na CDN isso vira 40 range requests ao longo
+      // do arquivo inteiro e o vídeo trava nos primeiros segundos.
+      // No localhost não aparece: o disco responde na hora.
+      if (Math.abs(alvo - atual) > 0.12) {
+        atual = alvo;
+        v.currentTime = atual * (dur - 0.05);
+        return;
+      }
+
       // damping: amarrar currentTime direto no progresso treme
       const proximo = atual + (alvo - atual) * 0.1;
       if (Math.abs(proximo - atual) > 0.0004) {
