@@ -12,13 +12,17 @@
   align-items: center;
 }
 
+/* a imagem rompe a faixa e sangra até a borda da tela: é o gesto editorial
+   que separa "site bem feito" de "peça impressa" */
 .midia {
-  grid-column: 1 / span 5;
+  grid-column: 1 / span 6;
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 0 4px 4px 0;
   background: var(--azul);
+  margin-left: calc(var(--gutter) * -1);
+  width: calc(100% + var(--gutter));
 }
 
 .foto {
@@ -31,7 +35,7 @@
 }
 
 .texto {
-  grid-column: 7 / span 6;
+  grid-column: 8 / span 5;
 }
 
 .titulo {
@@ -63,7 +67,7 @@
 
 /* números soltos, como marginália de projeto */
 .marcas {
-  grid-column: 7 / span 6;
+  grid-column: 8 / span 5;
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
@@ -95,6 +99,9 @@
   .midia {
     grid-column: 1 / -1;
     aspect-ratio: 3 / 2;
+    margin-inline: calc(var(--gutter) * -1);
+    width: calc(100% + var(--gutter) * 2);
+    border-radius: 0;
   }
   .texto,
   .marcas {

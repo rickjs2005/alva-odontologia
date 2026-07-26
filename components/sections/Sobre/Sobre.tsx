@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Reveal from "@/components/ui/Reveal/Reveal";
+import Contador from "@/components/ui/Contador/Contador";
 import { SOBRE } from "@/lib/conteudo";
 import { prefersReducedMotion } from "@/lib/motion";
 import s from "./Sobre.module.css";
@@ -12,9 +13,9 @@ import s from "./Sobre.module.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const MARCAS = [
-  { numero: "2009", rotulo: "Ano de fundação" },
-  { numero: "11", rotulo: "Pessoas na equipe" },
-  { numero: "5", rotulo: "Pacientes por dia, por decisão" },
+  { ate: 17, rotulo: "Anos de clínica" },
+  { ate: 11, rotulo: "Pessoas na equipe" },
+  { ate: 5, rotulo: "Pacientes por dia, por decisão" },
 ];
 
 export default function Sobre() {
@@ -66,7 +67,7 @@ export default function Sobre() {
               <span className="eyebrow">{SOBRE.eyebrow}</span>
             </Reveal>
 
-            <Reveal as="h2" modo="mask" className={s.titulo} delay={0.05}>
+            <Reveal as="h2" modo="palavras" className={s.titulo} delay={0.05}>
               {SOBRE.titulo}
             </Reveal>
 
@@ -94,7 +95,7 @@ export default function Sobre() {
             {MARCAS.map((m, i) => (
               <Reveal key={m.rotulo} modo="fade" delay={i * 0.08}>
                 <div className={s.marca}>
-                  <span className={s.numero}>{m.numero}</span>
+                  <Contador ate={m.ate} className={s.numero} />
                   <span className={s.rotulo}>{m.rotulo}</span>
                 </div>
               </Reveal>

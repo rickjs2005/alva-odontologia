@@ -1,0 +1,66 @@
+/* Grão de filme sobre tudo. É o que faz um site parecer colorizado em vez de
+   renderizado — o mesmo motivo pelo qual o vídeo tem grão.
+   Um elemento só, composto na GPU, sem JS e sem repaint. */
+.grao {
+  position: fixed;
+  inset: -50%;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.34;
+  mix-blend-mode: overlay;
+  background-image: var(--ruido);
+  background-size: 220px 220px;
+  will-change: transform;
+  animation: treme 0.9s steps(1) infinite;
+}
+
+/* o grão precisa se mexer, senão vira textura de parede */
+@keyframes treme {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-3%, 2%, 0);
+  }
+  40% {
+    transform: translate3d(2%, -3%, 0);
+  }
+  60% {
+    transform: translate3d(-2%, -2%, 0);
+  }
+  80% {
+    transform: translate3d(3%, 1%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* vinheta permanente, quase imperceptível: fecha os cantos e concentra o
+   olho no centro da página */
+.vinheta {
+  position: fixed;
+  inset: 0;
+  z-index: 79;
+  pointer-events: none;
+  background: radial-gradient(
+    130% 100% at 50% 50%,
+    rgba(32, 33, 36, 0) 62%,
+    rgba(32, 33, 36, 0.1) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grao {
+    animation: none;
+  }
+}
+
+/* No mobile o grão sai inteiro. mix-blend-mode obriga o browser a compor a
+   página toda a cada frame; medido, custava ~7 pontos de performance numa
+   CPU throttled. Não vale o ganho visual numa tela de 6". */
+@media (max-width: 1023px) {
+  .grao {
+    display: none;
+  }
+}

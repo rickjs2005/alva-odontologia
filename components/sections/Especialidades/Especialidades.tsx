@@ -16,7 +16,7 @@ export default function Especialidades() {
             <Reveal>
               <span className="eyebrow">O que fazemos</span>
             </Reveal>
-            <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
+            <Reveal as="h2" modo="palavras" delay={0.05} className={s.titulo}>
               O que dá pra resolver aqui.
             </Reveal>
           </div>

@@ -121,6 +121,14 @@ button {
   padding-inline: var(--gutter);
 }
 
+/* máscara por palavra usada pelo Reveal modo="palavras" */
+.reveal-palavra {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-right: 0.24em;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

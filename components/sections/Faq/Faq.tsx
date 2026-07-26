@@ -18,7 +18,7 @@ export default function Faq() {
             <Reveal>
               <span className="eyebrow">Dúvidas</span>
             </Reveal>
-            <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
+            <Reveal as="h2" modo="palavras" delay={0.05} className={s.titulo}>
               Perguntas que a gente ouve toda semana.
             </Reveal>
             <Reveal as="p" delay={0.12} className={s.apoio}>

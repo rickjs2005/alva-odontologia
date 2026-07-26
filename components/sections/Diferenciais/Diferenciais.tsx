@@ -49,7 +49,7 @@ export default function Diferenciais() {
         <Reveal>
           <span className="eyebrow">Como trabalhamos</span>
         </Reveal>
-        <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
+        <Reveal as="h2" modo="palavras" delay={0.05} className={s.titulo}>
           Nada disso é vitrine.
         </Reveal>
 

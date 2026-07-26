@@ -71,6 +71,21 @@ Duas correções, as duas necessárias:
 
 Depois disso o `currentTime` em produção bate exatamente com o do localhost.
 
+### O interlúdio
+
+No meio da página o filme volta. A seção é um véu opaco com um buraco em forma
+de arcada, e o buraco cresce com o scroll: o arco deixa de ser traço decorativo
+e vira janela. Ao mesmo tempo o vídeo reencontra o último plano em câmera
+lenta, e a frase por cima usa `mix-blend-mode: difference` para se inverter
+contra qualquer frame.
+
+A janela é feita com duas camadas de máscara compostas por `exclude` — uma
+cobre tudo, a outra é o arco. Onde `mask-composite` não existir, o véu
+simplesmente cobre: sem janela, mas a seção continua legível.
+
+É o único momento em que a identidade e o ativo principal se encontram, e é o
+que faz a página ter um segundo pico em vez de só o hero.
+
 ## Comportamento
 
 | Contexto | O que acontece |
@@ -110,8 +125,13 @@ Medido contra a URL de produção, Chrome headless.
 
 | | Perf | A11y | Best Practices | SEO |
 |---|---|---|---|---|
-| Desktop | 95–100 | 100 | 100 | 100 |
-| Mobile | 94–96 | 100 | 100 | 100 |
+| Desktop | 100 | 100 | 100 | 100 |
+| Mobile | 90 | 100 | 100 | 100 |
+
+O mobile caiu de ~95 para 90 quando entraram o interlúdio, a lente e o grão.
+O grão custava sozinho ~7 pontos: `mix-blend-mode` obriga o browser a compor a
+página inteira a cada frame. Ele foi cortado do mobile — numa tela de 6" o
+ganho visual não pagava a conta.
 
 O mobile oscila entre execuções (LCP 2,3–3,1s). O maior ganho veio de tirar a
 saída do loader das mãos do React: enquanto ela dependia da hidratação, a tela

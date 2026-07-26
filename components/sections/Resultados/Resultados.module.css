@@ -132,6 +132,76 @@
   outline-offset: 3px;
 }
 
+/* ---- a lente ----
+   "Veja de perto" deixa de ser figura de linguagem: o cursor vira uma lupa
+   que amplia a composição atual do comparador, respeitando o corte da alça.
+   Só existe em ponteiro fino — no touch não há hover para seguir. */
+.lente {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 200px;
+  margin: -100px 0 0 -100px;
+  transform: translate3d(var(--lx, 50%), var(--ly, 50%), 0);
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px var(--ouro), 0 18px 50px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+  z-index: 3;
+  will-change: transform;
+}
+
+.lenteAtiva {
+  opacity: 1;
+}
+
+.lenteInterna {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--lw, 0);
+  height: var(--lh, 0);
+  transform: translate3d(
+    calc(var(--lx, 0px) * -1.9 + 100px),
+    calc(var(--ly, 0px) * -1.9 + 100px),
+    0
+  );
+}
+
+.lenteFoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lenteAntes {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 calc(100% - var(--corte, 50%)) 0 0);
+}
+
+/* a alça também aparece dentro da lente, senão a ampliação mente */
+.lenteAlca {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--corte, 50%);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--ouro);
+}
+
+@media (pointer: coarse) {
+  .lente {
+    display: none;
+  }
+}
+
 .rotulo {
   position: absolute;
   top: 18px;

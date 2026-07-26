@@ -23,7 +23,7 @@ export default function Tour() {
         <Reveal>
           <span className="eyebrow">A clínica por dentro</span>
         </Reveal>
-        <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
+        <Reveal as="h2" modo="palavras" delay={0.05} className={s.titulo}>
           Madeira, vidro e luz da manhã.
         </Reveal>
 

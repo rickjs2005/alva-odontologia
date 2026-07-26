@@ -52,6 +52,21 @@
   display: block;
   width: 100%;
   height: 100%;
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+/* os vizinhos recuam quando um é escolhido — o olho vai onde você aponta */
+@media (hover: hover) {
+  .grade:hover .item {
+    opacity: 0.42;
+    transform: scale(0.985);
+  }
+
+  .grade .item:hover,
+  .grade .item:focus-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .foto {

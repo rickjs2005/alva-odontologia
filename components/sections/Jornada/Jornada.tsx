@@ -78,7 +78,7 @@ export default function Jornada() {
           <Reveal>
             <span className="eyebrow">Como funciona</span>
           </Reveal>
-          <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
+          <Reveal as="h2" modo="palavras" delay={0.05} className={s.titulo}>
             Da primeira consulta ao retorno de 180 dias.
           </Reveal>
         </div>

@@ -10,7 +10,7 @@ export default function Depoimentos() {
         <Reveal>
           <span className="eyebrow">Quem passou por aqui</span>
         </Reveal>
-        <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
+        <Reveal as="h2" modo="palavras" delay={0.05} className={s.titulo}>
           Ninguém aqui foi orientado sobre o que dizer.
         </Reveal>
 

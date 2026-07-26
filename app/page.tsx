@@ -10,12 +10,14 @@ import Sobre from "@/components/sections/Sobre/Sobre";
 import Especialidades from "@/components/sections/Especialidades/Especialidades";
 import Diferenciais from "@/components/sections/Diferenciais/Diferenciais";
 import Jornada from "@/components/sections/Jornada/Jornada";
+import Interludio from "@/components/sections/Interludio/Interludio";
 import Resultados from "@/components/sections/Resultados/Resultados";
 import Depoimentos from "@/components/sections/Depoimentos/Depoimentos";
 import Tour from "@/components/sections/Tour/Tour";
 import Faq from "@/components/sections/Faq/Faq";
 import Cta from "@/components/sections/Cta/Cta";
 import Footer from "@/components/sections/Footer/Footer";
+import Grao from "@/components/Grao/Grao";
 import JsonLd from "@/components/JsonLd";
 
 export default function Home() {
@@ -36,6 +38,7 @@ export default function Home() {
         <Especialidades />
         <Diferenciais />
         <Jornada />
+        <Interludio />
         <Resultados />
         <Depoimentos />
         <Tour />
@@ -44,6 +47,9 @@ export default function Home() {
       </main>
 
       <Footer />
+
+      {/* por último: o grão vive sobre tudo */}
+      <Grao />
     </>
   );
 }

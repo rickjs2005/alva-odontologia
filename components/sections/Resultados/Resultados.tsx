@@ -12,6 +12,7 @@ import s from "./Resultados.module.css";
  *  re-renderizando a árvore a cada pointermove engasga. */
 export default function Resultados() {
   const caixa = useRef<HTMLDivElement>(null);
+  const lente = useRef<HTMLSpanElement>(null);
   const valor = useRef(50);
   const arrastando = useRef(false);
   const demoFeita = useRef(false);
@@ -72,6 +73,45 @@ export default function Resultados() {
     return () => obs.disconnect();
   }, [aplicar]);
 
+  // a lente: segue o ponteiro e amplia 1,9x a composição atual
+  useEffect(() => {
+    const node = caixa.current;
+    if (!node) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (prefersReducedMotion()) return;
+
+    const medir = () => {
+      const r = node.getBoundingClientRect();
+      node.style.setProperty("--lw", `${r.width * 1.9}px`);
+      node.style.setProperty("--lh", `${r.height * 1.9}px`);
+    };
+
+    const move = (e: PointerEvent) => {
+      const r = node.getBoundingClientRect();
+      node.style.setProperty("--lx", `${e.clientX - r.left}px`);
+      node.style.setProperty("--ly", `${e.clientY - r.top}px`);
+    };
+
+    const entra = () => {
+      medir();
+      lente.current?.classList.add(s.lenteAtiva);
+    };
+    const sai = () => lente.current?.classList.remove(s.lenteAtiva);
+
+    medir();
+    window.addEventListener("resize", medir);
+    node.addEventListener("pointerenter", entra);
+    node.addEventListener("pointermove", move);
+    node.addEventListener("pointerleave", sai);
+
+    return () => {
+      window.removeEventListener("resize", medir);
+      node.removeEventListener("pointerenter", entra);
+      node.removeEventListener("pointermove", move);
+      node.removeEventListener("pointerleave", sai);
+    };
+  }, [caso]);
+
   useEffect(() => {
     const node = caixa.current;
     if (!node) return;
@@ -127,7 +167,7 @@ export default function Resultados() {
             <Reveal>
               <span className="eyebrow">Resultados</span>
             </Reveal>
-            <Reveal as="h2" modo="mask" delay={0.05} className={s.titulo}>
+            <Reveal as="h2" modo="palavras" delay={0.05} className={s.titulo}>
               Veja de perto.
             </Reveal>
           </div>
@@ -198,6 +238,30 @@ export default function Resultados() {
 
               <span className={s.alca} aria-hidden>
                 <span className={s.puxador}>⟷</span>
+              </span>
+
+              <span ref={lente} className={s.lente} aria-hidden>
+                <span className={s.lenteInterna}>
+                  <Image
+                    className={s.lenteFoto}
+                    src={atual.depois}
+                    alt=""
+                    width={1264}
+                    height={848}
+                    sizes="(max-width: 1440px) 100vw, 1440px"
+                  />
+                  <span className={s.lenteAntes}>
+                    <Image
+                      className={s.lenteFoto}
+                      src={atual.antes}
+                      alt=""
+                      width={1264}
+                      height={848}
+                      sizes="(max-width: 1440px) 100vw, 1440px"
+                    />
+                  </span>
+                  <span className={s.lenteAlca} />
+                </span>
               </span>
             </div>
           </Reveal>

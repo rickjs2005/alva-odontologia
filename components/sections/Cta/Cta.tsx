@@ -11,7 +11,7 @@ export default function Cta() {
           <span className="eyebrow">Agende</span>
         </Reveal>
 
-        <Reveal as="h2" modo="mask" delay={0.06} className={s.titulo}>
+        <Reveal as="h2" modo="palavras" delay={0.06} className={s.titulo}>
           Pronto para transformar seu sorriso?
         </Reveal>
 
