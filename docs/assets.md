@@ -88,4 +88,26 @@ Medição que decidiu o CRF (clipe de 5s, 720p, 30fps, GOP 1):
 | Clipes | 61,25 |
 | **Total** | **87,25** |
 
-Teto: 250. Restante para as imagens do site: ~163.
+## Segunda rodada — auditoria de design
+
+Depois da auditoria, mais 12 créditos:
+
+| Arquivo | Job | Por quê |
+|---|---|---|
+| `tour-01` (refeito) | `dd02d63f-25bb-4953-8d94-ec9cab8d963d` | recepcionista escrevendo na agenda |
+| `tour-02` (refeito) | `0d747948-c255-4499-8a54-b05e01c3d4d8` | paciente lendo, revista torta, casaco na cadeira |
+| `antes-2` / `depois-2` | `577152f0…` / `dd0c75be…` | caso de clareamento |
+| `antes-3` / `depois-3` | `f62a82a7…` / `dc70baf4…` | caso de ortodontia |
+
+As duas fotos de tour foram refeitas porque **seis fotos sem uma única pessoa
+e sem nenhuma desordem** eram o sinal mais forte de imagem gerada. Uma clínica
+real tem uma revista torta.
+
+Nos pares novos, o "depois" deriva sempre do "antes" por referência — é o que
+mantém rosto, enquadramento e luz idênticos. E cada caso muda só o que aquele
+tratamento muda: no de ortodontia a cor do esmalte permanece igual, porque
+alinhador não clareia dente.
+
+## Total
+
+**99,25 créditos** de um teto de 250.

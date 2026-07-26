@@ -110,7 +110,7 @@ Medido contra a URL de produção, Chrome headless.
 
 | | Perf | A11y | Best Practices | SEO |
 |---|---|---|---|---|
-| Desktop | 100 | 100 | 100 | 100 |
+| Desktop | 95–100 | 100 | 100 | 100 |
 | Mobile | 94–96 | 100 | 100 | 100 |
 
 O mobile oscila entre execuções (LCP 2,3–3,1s). O maior ganho veio de tirar a
