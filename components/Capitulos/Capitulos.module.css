@@ -1,14 +1,22 @@
 /* camada de texto do filme: sticky dentro do hero, acima do vídeo e abaixo
    da nav.
-   margin-top: -100vh: a .camada é irmã do .palco (Hero.module.css) e os dois
-   ocupam 100vh em fluxo normal — sem a margem negativa, a posição estática
-   da .camada ficaria 100vh abaixo da do .palco e o sticky só engataria bem
-   depois do topo do hero, atrasando a entrada do capítulo 02 sozinho (os
-   demais já nascem depois desse ponto e não sentem o efeito). */
+   margin-top: -100vh / -100svh: a .camada é irmã do .palco (Hero.module.css)
+   e os dois ocupam a altura do viewport em fluxo normal — sem a margem
+   negativa, a posição estática da .camada ficaria uma tela abaixo da do
+   .palco e o sticky só engataria bem depois do topo do hero, atrasando a
+   entrada do capítulo 02 sozinho (os demais já nascem depois desse ponto e
+   não sentem o efeito). A margem tem que acompanhar a mesma unidade que
+   vence no `height` logo abaixo: svh < vh em navegadores com barra de UI
+   dinâmica, e o gate de desktop (min-width: 1024px) inclui iPad em
+   paisagem, onde isso acontece. Com a margem só em vh e a altura em svh, o
+   cancelamento deixa de ser exato — a camada é puxada além da conta e
+   reintroduz uma versão menor do desalinhamento que esta margem existe para
+   corrigir. */
 .camada {
   position: sticky;
   top: 0;
   margin-top: -100vh;
+  margin-top: -100svh;
   height: 100vh;
   height: 100svh;
   pointer-events: none;

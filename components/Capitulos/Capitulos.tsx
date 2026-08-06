@@ -88,8 +88,7 @@ export default function Capitulos() {
 
         // toFixed(4) e não String(op): op passa por zero via subtração de
         // ponto flutuante, e String(2.1e-15) emite notação científica, que
-        // opacity não entende. toFixed também torna alcançável o atalho
-        // `op > 0.995 → filter: none` logo abaixo, hoje quase nunca batido.
+        // opacity não entende.
         el.style.opacity = op.toFixed(4);
         // dois translateY: o primeiro em % centra o bloco na sua própria
         // altura (o CSS o ancora em top: 50%), o segundo em px é o movimento.
