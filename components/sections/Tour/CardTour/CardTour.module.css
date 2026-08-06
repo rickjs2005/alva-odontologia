@@ -1,0 +1,71 @@
+/* O cartão é o degrau: a seção é --fundo, ele é --superficie. Sem esse
+   degrau ele não lê como objeto sobre uma superfície, lê como um retângulo
+   do mesmo tom. */
+.card {
+  position: sticky;
+  /* 12svh de respiro no topo, mais 14px por cartão: é o escalonamento que
+     deixa a borda do anterior aparecendo embaixo do seguinte */
+  top: calc(12svh + var(--i) * 14px);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 74svh;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--superficie);
+  /* o fio de ouro mora aqui, com 1px, como manda a regra */
+  border-top: 1px solid var(--ouro);
+  transform-origin: 50% 20%;
+  will-change: transform, opacity;
+}
+
+.foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.legenda {
+  display: grid;
+  gap: 10px;
+  padding: clamp(20px, 3vw, 34px) clamp(20px, 3vw, 38px);
+}
+
+.rotulo {
+  /* caixa alta em 14px peso 500 — a segunda forma permitida do ouro */
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ouro);
+}
+
+.texto {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--texto);
+}
+
+@media (max-width: 899px) {
+  .card {
+    height: 66svh;
+  }
+  .texto {
+    font-size: 0.94rem;
+  }
+}
+
+/* Sem movimento: a pilha desmonta e vira lista. Não basta matar o scrub —
+   sticky sozinho já é movimento. */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    position: static;
+    height: auto;
+    transform: none;
+    opacity: 1;
+  }
+  .foto {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+}
