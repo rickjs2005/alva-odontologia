@@ -75,7 +75,11 @@ export default function Hero() {
       aria-label="Apresentação"
       data-secao="O filme"
     >
-      <div ref={palco} className={s.palco}>
+      {/* o palco É o capítulo 01: janela PLANOS[0], opacidade no mesmo
+          relógio dos outros seis, só mora aqui por ser o elemento de LCP.
+          data-capitulo="0" deixa o verifica-capitulos.mjs enxergá-lo — sem
+          isso a fronteira 01→02 passava por vacuidade, sem checar nada */}
+      <div ref={palco} className={s.palco} data-capitulo="0">
         <div className={s.conteudo}>
           <span className={`eyebrow ${s.eyebrow}`}>
             Jardins · São Paulo
