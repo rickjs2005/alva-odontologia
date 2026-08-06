@@ -53,7 +53,7 @@ export const PLANOS = [
     linha: "Onze pessoas trabalham aqui. Cinco pacientes passam por dia.",
     apoio: null,
     lado: "esq",
-    peso: 0.6,
+    peso: 0.4,
   },
   {
     nome: "O consultório",

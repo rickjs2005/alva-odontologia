@@ -43,6 +43,24 @@
   );
 }
 
+/* "O corredor" é o único capítulo sem linha de apoio (`apoio: null` em
+   lib/scenes.ts) — só a linha display, grande, que precisa de 3:1, não dos
+   4.5:1 que a linha de apoio exige. O gradiente acima foi dimensionado para
+   o critério mais alto; contra o vidro de linhas retas do corredor, essa
+   escuridão sobrando aparece como mancha. Aqui ela cai pela metade e a cauda
+   estica mais cedo — o piso continua sendo 3:1 na linha display, não o
+   contraste do gradiente padrão. Não uniformize os dois: um tem apoio, o
+   outro não. */
+.soLinha::before {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(32, 33, 36, 0.36) 0%,
+    rgba(32, 33, 36, 0.24) 40%,
+    rgba(32, 33, 36, 0.08) 58%,
+    rgba(32, 33, 36, 0) 78%
+  );
+}
+
 .esq {
   left: var(--gutter);
 }

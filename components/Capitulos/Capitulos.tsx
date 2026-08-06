@@ -124,7 +124,9 @@ export default function Capitulos() {
           <div
             key={c.nome}
             data-capitulo={plano}
-            className={`${s.capitulo} ${c.lado === "dir" ? s.dir : s.esq}`}
+            className={`${s.capitulo} ${c.lado === "dir" ? s.dir : s.esq} ${
+              c.apoio ? "" : s.soLinha
+            }`}
             // nasce inerte: se o rAF abaixo nunca rodar (mobile,
             // reduced-motion, ou a viewport cruzando 1024px depois do mount,
             // quando `isDesktop()` já foi lido uma vez só), os dois links do
