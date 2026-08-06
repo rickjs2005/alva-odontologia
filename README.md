@@ -137,6 +137,21 @@ O mobile oscila entre execuções (LCP 2,3–3,1s). O maior ganho veio de tirar 
 saída do loader das mãos do React: enquanto ela dependia da hidratação, a tela
 ficava coberta até ~3s e o LCP era medido ali.
 
+### Hero narrativo (2026-08-06)
+
+Fechamento da task 8: só Performance, só desktop, contra o build de produção
+local (`npm run start` na porta 3001; `npx lighthouse` não achava Chrome
+instalado no ambiente — apontou para o Chromium que o Playwright já baixa).
+
+| | Perf |
+|---|---|
+| Desktop | 99 |
+
+LCP 0,7s · TBT 20ms · CLS 0 · FCP 0,3s · Speed Index 0,7s. Os sete blocos de
+texto do hero narrativo (`Capitulos.tsx`) ficam sempre no DOM e só mudam
+opacidade — não custou o esperado, `BORRAO` e o `will-change` não precisaram
+de ajuste.
+
 ## Documentos
 
 - `docs/superpowers/specs/` — o design aprovado antes da primeira linha de código

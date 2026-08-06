@@ -1,42 +1,53 @@
-.anel {
+/* Silhueta de molar: coroa larga de cantos arredondados, duas raízes com o
+   sulco no meio. mix-blend-mode difference mantém a leitura tanto sobre os
+   planos estourados de luz quanto sobre o grafite das seções claras. */
+.dente {
   position: fixed;
   top: 0;
   left: 0;
-  width: 28px;
-  height: 28px;
-  margin: -14px 0 0 -14px;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 50%;
+  width: 20px;
+  height: 26px;
+  margin: -13px 0 0 -10px;
   pointer-events: none;
   z-index: 90;
   mix-blend-mode: difference;
   opacity: 0;
   transition: width 0.35s var(--ease), height 0.35s var(--ease),
-    margin 0.35s var(--ease), opacity 0.3s linear,
-    background-color 0.35s var(--ease);
-  display: grid;
-  place-items: center;
+    margin 0.35s var(--ease), opacity 0.3s linear;
   will-change: transform;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: rgba(255, 255, 255, 0.92);
 }
 
 .visivel {
   opacity: 1;
 }
 
+/* expandido: a coroa cresce o bastante para o rótulo caber dentro dela */
 .expandido {
-  width: 76px;
-  height: 76px;
-  margin: -38px 0 0 -38px;
-  background: rgba(255, 255, 255, 0.9);
-  border-color: transparent;
+  width: 56px;
+  height: 72px;
+  margin: -36px 0 0 -28px;
 }
 
+/* o rótulo vive na coroa, não no centro geométrico — a metade de baixo é
+   raiz e afina */
 .rotulo {
-  font-size: 0.62rem;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.6rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--grafite);
+  white-space: nowrap;
   opacity: 0;
   transition: opacity 0.25s linear;
   mix-blend-mode: normal;
@@ -46,31 +57,8 @@
   opacity: 1;
 }
 
-/* ponto central: dá precisão quando o anel está pequeno */
-.ponto {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 4px;
-  margin: -2px 0 0 -2px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  pointer-events: none;
-  z-index: 90;
-  mix-blend-mode: difference;
-  opacity: 0;
-  transition: opacity 0.3s linear;
-  will-change: transform;
-}
-
-.expandidoPonto {
-  opacity: 0;
-}
-
 @media (pointer: coarse) {
-  .anel,
-  .ponto {
+  .dente {
     display: none;
   }
 }

@@ -12,15 +12,17 @@
   object-fit: cover;
 }
 
-/* véu + vinheta: garante contraste AA do texto branco do hero sobre
-   qualquer frame, inclusive os estourados de luz */
-/* scrim direcional: a copy do hero vive embaixo à esquerda e alguns planos
-   estouram de luz justo ali. Sai de cena junto com o texto (ver Hero) —
-   depois disso o filme fica sozinho e não faz sentido escurecê-lo. */
+/* Dois scrims. O direcional é pesado embaixo à esquerda porque é lá que o H1
+   vive, e alguns planos estouram de luz justo ali; ele sai depois do plano
+   01, quando o H1 sai. O narrativo é simétrico porque os capítulos 02–07
+   alternam de lado — um scrim de canto estaria errado metade do tempo.
+   As duas opacidades vêm do rAF do Capitulos. Sem transition: interpolar por
+   cima do scrub deixa a escuridão meio quadro atrasada. */
 .scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  opacity: var(--scrim-dir, 1);
   background: linear-gradient(
       100deg,
       rgba(32, 33, 36, 0.8) 0%,
@@ -33,6 +35,19 @@
       rgba(32, 33, 36, 0) 34%,
       rgba(32, 33, 36, 0.22) 66%,
       rgba(32, 33, 36, 0.5) 100%
+    );
+}
+
+.scrimNarrativo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--scrim-narr, 0);
+  background: linear-gradient(
+      to bottom,
+      rgba(32, 33, 36, 0.42) 0%,
+      rgba(32, 33, 36, 0.5) 50%,
+      rgba(32, 33, 36, 0.42) 100%
     );
 }
 

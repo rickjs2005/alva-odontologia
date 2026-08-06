@@ -4,8 +4,11 @@ import { Fragment, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { world } from "@/lib/world";
-import { EASE, DUR, prefersReducedMotion, isDesktop } from "@/lib/motion";
+import { saidaDoH1 } from "@/lib/scenes";
+import { prefersReducedMotion, isDesktop } from "@/lib/motion";
 import { WHATSAPP_URL } from "@/lib/clinica";
+import Botao from "@/components/ui/Botao/Botao";
+import Capitulos from "@/components/Capitulos/Capitulos";
 import s from "./Hero.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -40,39 +43,30 @@ export default function Hero() {
       start: "top top",
       end: "bottom bottom",
       onUpdate: (self) => {
-        world.progresso = self.progress;
-      },
-    });
+        const p = self.progress;
+        world.progresso = p;
+        world.heroProgresso = p;
 
-    // a copy sai de cena cedo — depois dela o filme fica sozinho
-    const saida = gsap.to([palco.current, "#alva-scrim"], {
-      opacity: 0,
-      ease: "none",
-      scrollTrigger: {
-        trigger: node,
-        start: "top top",
-        end: "18% top",
-        scrub: 0.6,
-      },
-    });
+        // O capítulo 01 sai no relógio dos planos, não numa porcentagem do
+        // curso. Com "18% top" a copy ainda estaria legível quando o
+        // capítulo 02 entrasse (v0 = 0.1475) e os dois se sobreporiam.
+        // Aqui a saída começa em 55% da janela do plano 01 e termina
+        // exatamente no corte para o plano 02.
+        // saidaDoH1 mora em lib/scenes.ts porque Capitulos.tsx usa o mesmo
+        // cálculo para apagar o scrim direcional — os dois precisam andar
+        // juntos.
+        const saida = saidaDoH1(p);
 
-    const sobe = gsap.to(palco.current, {
-      y: -40,
-      ease: "none",
-      scrollTrigger: {
-        trigger: node,
-        start: "top top",
-        end: "18% top",
-        scrub: 0.6,
+        const el = palco.current;
+        if (el) {
+          el.style.opacity = String(1 - saida);
+          el.style.transform = `translateY(${-saida * 40}px)`;
+        }
       },
     });
 
     return () => {
       st.kill();
-      saida.scrollTrigger?.kill();
-      saida.kill();
-      sobe.scrollTrigger?.kill();
-      sobe.kill();
     };
   }, []);
 
@@ -83,7 +77,11 @@ export default function Hero() {
       aria-label="Apresentação"
       data-secao="O filme"
     >
-      <div ref={palco} className={s.palco}>
+      {/* o palco É o capítulo 01: janela PLANOS[0], opacidade no mesmo
+          relógio dos outros seis, só mora aqui por ser o elemento de LCP.
+          data-capitulo="0" deixa o verifica-capitulos.mjs enxergá-lo — sem
+          isso a fronteira 01→02 passava por vacuidade, sem checar nada */}
+      <div ref={palco} className={s.palco} data-capitulo="0">
         <div className={s.conteudo}>
           <span className={`eyebrow ${s.eyebrow}`}>
             Jardins · São Paulo
@@ -116,18 +114,12 @@ export default function Hero() {
           </p>
 
           <div className={s.acoes}>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${s.botao} ${s.primario}`}
-              data-magnetico
-            >
+            <Botao href={WHATSAPP_URL} externo>
               Agendar Consulta
-            </a>
-            <a href="#sobre" className={`${s.botao} ${s.ghost}`} data-magnetico>
+            </Botao>
+            <Botao href="#sobre" variante="ghost" tom="escuro">
               Conhecer a Clínica
-            </a>
+            </Botao>
           </div>
 
           {/* Indicadores que sustentam a tese em vez de brigar com ela.
@@ -152,6 +144,8 @@ export default function Hero() {
           <span className={s.seta}>↓</span>
         </div>
       </div>
+
+      <Capitulos />
     </section>
   );
 }

@@ -78,21 +78,24 @@ export default function VideoRig() {
       if (Math.abs(alvo - atual) > 0.12) {
         atual = alvo;
         v.currentTime = atual * (dur - 0.05);
-        return;
+      } else {
+        // damping: amarrar currentTime direto no progresso treme
+        const proximo = atual + (alvo - atual) * 0.1;
+        if (Math.abs(proximo - atual) > 0.0004) {
+          atual = proximo;
+          // -0.05s: seek exatamente em duration congela no último frame
+          v.currentTime = atual * (dur - 0.05);
+        }
       }
 
-      // damping: amarrar currentTime direto no progresso treme
-      const proximo = atual + (alvo - atual) * 0.1;
-      if (Math.abs(proximo - atual) > 0.0004) {
-        atual = proximo;
-        // -0.05s: seek exatamente em duration congela no último frame
-        v.currentTime = atual * (dur - 0.05);
-
-        if (hud.current) {
-          const i = planoEm(atual);
-          const txt = `${String(i + 1).padStart(2, "0")} · ${PLANOS[i].nome}`;
-          if (hud.current.textContent !== txt) hud.current.textContent = txt;
-        }
+      // HUD: depende só do `atual` corrente, não do caminho que o trouxe até
+      // aqui — precisa refletir o plano certo tanto no salto grande quanto
+      // no damping. A guarda de texto igual fica: é ela quem evita escrever
+      // no DOM a cada quadro quando o plano não mudou.
+      if (hud.current) {
+        const i = planoEm(atual);
+        const txt = `${String(i + 1).padStart(2, "0")} · ${PLANOS[i].nome}`;
+        if (hud.current.textContent !== txt) hud.current.textContent = txt;
       }
     };
 
@@ -117,6 +120,7 @@ export default function VideoRig() {
         poster="/video/poster.webp"
       />
       <div id="alva-scrim" className={s.scrim} />
+      <div className={s.scrimNarrativo} />
       <div className={s.vinheta} />
       <span className={s.hud}>
         plano<span ref={hud} className={s.plano}>01 · A porta</span>

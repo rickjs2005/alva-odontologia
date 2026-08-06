@@ -6,7 +6,9 @@
 }
 
 /* sticky em vez de pin do ScrollTrigger: menos briga com o Lenis e sem
-   pin-spacer alterando a altura do documento */
+   pin-spacer alterando a altura do documento.
+   opacity e transform são escritos pelo onUpdate do Hero, no relógio do
+   plano 01 — não ponha transition aqui. */
 .palco {
   position: sticky;
   top: 0;
@@ -79,39 +81,6 @@
   margin-top: clamp(28px, 4vh, 44px);
   opacity: 0;
   animation: surge 0.9s var(--ease) 0.9s forwards;
-}
-
-.botao {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 56px;
-  padding-inline: 32px;
-  border-radius: 2px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transition: background-color 0.4s var(--ease), color 0.4s var(--ease),
-    border-color 0.4s var(--ease);
-}
-
-.primario {
-  background: var(--petroleo);
-  color: var(--branco);
-}
-
-.primario:hover {
-  background: #0c3d68;
-}
-
-.ghost {
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  color: var(--branco);
-}
-
-.ghost:hover {
-  border-color: var(--branco);
-  background: rgba(255, 255, 255, 0.08);
 }
 
 .indicadores {
@@ -188,6 +157,23 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Desktop: a primeira dobra é uma cena, não uma landing page. Ficam a
+   eyebrow, o H1 e a seta; o CTA volta em tela cheia no capítulo 07 e o
+   "Agendar" da navbar cobre o intervalo.
+   Estes três continuam no HTML de propósito: são o que o mobile mostra, onde
+   o filme não anda.
+   Isto só vale quando o filme realmente anda: o guarda em JS que liga o
+   scrub é `isDesktop() && !prefersReducedMotion()`, dois critérios. Gatear
+   esta regra só por largura escondia a dobra inteira num desktop com
+   reduced-motion — vídeo parado no poster e nenhum CTA no hero. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .sub,
+  .acoes,
+  .indicadores {
+    display: none;
   }
 }
 

@@ -1,0 +1,148 @@
+/* camada de texto do filme: sticky dentro do hero, acima do vídeo e abaixo
+   da nav.
+   margin-top: -100vh / -100svh: a .camada é irmã do .palco (Hero.module.css)
+   e os dois ocupam a altura do viewport em fluxo normal — sem a margem
+   negativa, a posição estática da .camada ficaria uma tela abaixo da do
+   .palco e o sticky só engataria bem depois do topo do hero, atrasando a
+   entrada do capítulo 02 sozinho (os demais já nascem depois desse ponto e
+   não sentem o efeito). A margem tem que acompanhar a mesma unidade que
+   vence no `height` logo abaixo: svh < vh em navegadores com barra de UI
+   dinâmica, e o gate de desktop (min-width: 1024px) inclui iPad em
+   paisagem, onde isso acontece. Com a margem só em vh e a altura em svh, o
+   cancelamento deixa de ser exato — a camada é puxada além da conta e
+   reintroduz uma versão menor do desalinhamento que esta margem existe para
+   corrigir. */
+.camada {
+  position: sticky;
+  top: 0;
+  margin-top: -100vh;
+  margin-top: -100svh;
+  height: 100vh;
+  height: 100svh;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.capitulo {
+  position: absolute;
+  top: 50%;
+  width: min(46ch, 42vw);
+  opacity: 0;
+  color: var(--branco);
+  /* o rAF escreve transform, opacity e filter. Nada de transition aqui:
+     interpolar por cima do scrub deixa o texto meio quadro atrasado. */
+  will-change: transform, opacity, filter;
+}
+
+/* scrim local: reforça o contraste da linha de apoio nos frames onde o
+   fundo atrás do texto é claro (janela do consultório, cortina do detalhe)
+   sem escurecer o filme inteiro como o scrim narrativo faria. Sangra bem
+   além da caixa de texto para não ter borda perto das letras, e some bem
+   antes do próprio limite para não virar uma forma perceptível. O
+   `will-change` acima já cria contexto de empilhamento no `.capitulo`, então
+   `z-index: -1` basta para ficar atrás do texto (filhos em fluxo normal) e
+   ainda acima do vídeo/scrim de tela cheia (que vivem fora deste contexto). */
+.capitulo::before {
+  content: "";
+  position: absolute;
+  inset: -10% -14%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(32, 33, 36, 0.72) 0%,
+    rgba(32, 33, 36, 0.5) 45%,
+    rgba(32, 33, 36, 0.2) 63%,
+    rgba(32, 33, 36, 0) 86%
+  );
+}
+
+/* "O corredor" é o único capítulo sem linha de apoio (`apoio: null` em
+   lib/scenes.ts) — só a linha display, grande, que precisa de 3:1, não dos
+   4.5:1 que a linha de apoio exige. O gradiente acima foi dimensionado para
+   o critério mais alto; contra o vidro de linhas retas do corredor, essa
+   escuridão sobrando aparece como mancha. Aqui ela cai pela metade e a cauda
+   estica mais cedo — o piso continua sendo 3:1 na linha display, não o
+   contraste do gradiente padrão. Não uniformize os dois: um tem apoio, o
+   outro não. */
+.soLinha::before {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(32, 33, 36, 0.36) 0%,
+    rgba(32, 33, 36, 0.24) 40%,
+    rgba(32, 33, 36, 0.08) 58%,
+    rgba(32, 33, 36, 0) 78%
+  );
+}
+
+.esq {
+  left: var(--gutter);
+}
+
+.dir {
+  right: var(--gutter);
+  text-align: right;
+}
+
+/* display serif, mas menor que o H1 — ele continua sendo o topo da
+   hierarquia. Sem scale na animação: em Cormorant o scale borra a serifa
+   durante a interpolação. */
+.linha {
+  margin: 0;
+  font-family: var(--display), "Cormorant Garamond", Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 4.2vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.apoio {
+  margin: clamp(16px, 2.2vh, 26px) 0 0;
+  max-width: 42ch;
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.dir .apoio {
+  margin-left: auto;
+}
+
+/* capítulo 07: o CTA volta. Só o layout do par mora aqui — o estilo dos
+   botões é do components/ui/Botao (ver Task 3). */
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(28px, 4vh, 44px);
+  /* liberado pelo rAF só enquanto o capítulo está legível — senão vira alvo
+     invisível sobre o filme inteiro */
+  pointer-events: inherit;
+}
+
+.dir .acoes {
+  justify-content: flex-end;
+}
+
+/* Os dois casos em que o rAF do Capitulos.tsx desiste na entrada: sem o
+   filme andando, os capítulos ficariam parados em opacity 0 para sempre —
+   texto invisível. Isso aqui é só o lado visual do problema: a camada
+   inteira some para não deixar um bloco de texto morto plantado na tela.
+   A segurança de foco (nenhum link de CTA alcançável por Tab) NÃO depende
+   mais destas queries baterem com os guardas do JS — os capítulos já nascem
+   com o atributo `inert` no JSX (ver Capitulos.tsx), então mesmo que a
+   viewport cruze 1024px depois do mount (isDesktop() só é lido uma vez) e
+   o rAF nunca chegue a rodar, os links continuam inertes para sempre.
+   O texto continua no HTML servido, que é o que os crawlers leem. */
+@media (max-width: 1023px) {
+  .camada {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camada {
+    display: none;
+  }
+}
