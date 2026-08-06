@@ -28,10 +28,12 @@
   gap: 12px;
   padding: 10px 16px;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.82);
+  /* Era vidro branco, com uma variante .escuro para as duas seções escuras
+     que existiam. Agora todas são — o tratamento escuro virou o único. */
+  background: rgba(26, 26, 26, 0.72);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(32, 33, 36, 0.06);
+  border: 1px solid var(--linha);
 }
 
 .rotulo {
@@ -39,7 +41,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ouro-texto);
+  color: var(--ouro);
   white-space: nowrap;
   transition: opacity 0.4s var(--ease);
 }
@@ -58,16 +60,6 @@
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
   opacity: 0.26;
-}
-
-/* sobre as seções escuras a pastilha inverte */
-.escuro {
-  background: rgba(32, 33, 36, 0.72);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.escuro .rotulo {
-  color: var(--ouro);
 }
 
 /* ---- modo assinatura: desenha-se ao entrar na viewport ---- */

@@ -1,7 +1,7 @@
 .secao {
   position: relative;
   z-index: 1;
-  background: var(--cinza);
+  background: var(--fundo);
   padding-block: clamp(88px, 14vh, 168px);
 }
 
@@ -35,10 +35,12 @@
   flex-direction: column;
   gap: 24px;
   padding: clamp(28px, 3vw, 40px);
-  background: var(--branco);
-  border: 1px solid rgba(32, 33, 36, 0.07);
+  /* Elevação por superfície, não por sombra. A --sombra era composta de
+     grafite translúcido: sombra preta sobre fundo preto não existe. O que
+     levanta o card agora é ele ser mais claro que a seção, com um fio. */
+  background: var(--superficie);
+  border: 1px solid var(--linha);
   border-radius: 4px;
-  box-shadow: var(--sombra);
 }
 
 .aspas {
@@ -85,7 +87,7 @@
 
 .detalhe {
   font-size: 0.82rem;
-  color: rgba(32, 33, 36, 0.55);
+  color: var(--texto-3);
 }
 
 @media (max-width: 1023px) {

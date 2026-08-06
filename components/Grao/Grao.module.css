@@ -1,13 +1,20 @@
 /* Grão de filme sobre tudo. É o que faz um site parecer colorizado em vez de
    renderizado — o mesmo motivo pelo qual o vídeo tem grão.
-   Um elemento só, composto na GPU, sem JS e sem repaint. */
+   Um elemento só, composto na GPU, sem JS e sem repaint.
+
+   soft-light, não overlay. Overlay empurra cada pixel para longe do meio:
+   sobre um fundo claro isso rende bem, mas sobre #1A1A1A ele só escurece o
+   que já é quase preto, e o grão some. soft-light continua clareando os
+   pixels claros do ruído sobre base escura, que é onde o grão vive agora.
+   A opacidade sobe de 0.34 para 0.5 pelo mesmo motivo: há menos alcance
+   disponível para o efeito quando a base é escura. */
 .grao {
   position: fixed;
   inset: -50%;
   z-index: 80;
   pointer-events: none;
-  opacity: 0.34;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
   background-image: var(--ruido);
   background-size: 220px 220px;
   will-change: transform;
@@ -36,17 +43,19 @@
   }
 }
 
-/* vinheta permanente, quase imperceptível: fecha os cantos e concentra o
-   olho no centro da página */
+/* Vinheta permanente, quase imperceptível: concentra o olho no centro.
+   Invertida junto com a paleta. Escurecer os cantos de uma página que já é
+   #1A1A1A não produz nada visível — o que rende sobre escuro é clarear o
+   centro, de leve. Mesmo efeito, mecanismo oposto. */
 .vinheta {
   position: fixed;
   inset: 0;
   z-index: 79;
   pointer-events: none;
   background: radial-gradient(
-    130% 100% at 50% 50%,
-    rgba(32, 33, 36, 0) 62%,
-    rgba(32, 33, 36, 0.1) 100%
+    130% 100% at 50% 45%,
+    rgba(248, 248, 248, 0.035) 0%,
+    rgba(248, 248, 248, 0) 58%
   );
 }
 

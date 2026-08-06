@@ -14,9 +14,6 @@ type Props = {
   className?: string;
 };
 
-/** as seções de fundo escuro, na ordem em que aparecem no documento */
-const ESCURAS = new Set(["O filme", "Resultados"]);
-
 export default function Arco({ modo, className }: Props) {
   const traco = useRef<SVGPathElement>(null);
   const raiz = useRef<SVGSVGElement>(null);
@@ -105,7 +102,7 @@ export default function Arco({ modo, className }: Props) {
   return (
     <div
       ref={caixa}
-      className={`${s.progresso} ${ESCURAS.has(secao) ? s.escuro : ""}`}
+      className={s.progresso}
       aria-hidden
     >
       <span className={s.rotulo}>{secao}</span>

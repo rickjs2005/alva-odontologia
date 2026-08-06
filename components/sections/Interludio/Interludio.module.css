@@ -24,7 +24,7 @@
 .veu {
   position: absolute;
   inset: 0;
-  background: var(--branco);
+  background: var(--fundo);
   -webkit-mask-image: linear-gradient(#000, #000), var(--janela);
   mask-image: linear-gradient(#000, #000), var(--janela);
   -webkit-mask-repeat: no-repeat, no-repeat;
@@ -54,7 +54,7 @@
   line-height: 1.02;
   letter-spacing: -0.02em;
   /* difference: a frase se inverte contra o filme, seja qual for o frame */
-  color: var(--branco);
+  color: var(--texto);
   mix-blend-mode: difference;
   opacity: 0;
   pointer-events: none;
@@ -69,7 +69,7 @@
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--branco);
+  color: var(--texto);
   mix-blend-mode: difference;
   opacity: 0;
 }
@@ -83,12 +83,12 @@
   .veu {
     -webkit-mask-image: none;
     mask-image: none;
-    background: rgba(32, 33, 36, 0.42);
+    background: rgba(26, 26, 26, 0.42);
   }
   .frase {
     opacity: 1;
     mix-blend-mode: normal;
-    text-shadow: 0 2px 30px rgba(32, 33, 36, 0.5);
+    text-shadow: 0 2px 30px rgba(26, 26, 26, 0.5);
   }
   /* no mobile o vídeo é o corte dos planos 1–2: o crédito "plano 07" seria
      mentira */
@@ -104,7 +104,7 @@
   .veu {
     -webkit-mask-image: none;
     mask-image: none;
-    background: rgba(32, 33, 36, 0.42);
+    background: rgba(26, 26, 26, 0.42);
   }
   .frase,
   .creditos {

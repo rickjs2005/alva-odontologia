@@ -1,26 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  --color-branco: #ffffff;
-  --color-petroleo: #0f4c81;
-  --color-azul: #eaf5ff;
-  --color-cinza: #f7f8fa;
-  --color-grafite: #202124;
-  --color-ouro: #c9a86a;
+  --color-fundo: #1a1a1a;
+  --color-superficie: #272726;
+  --color-ouro-base: #b08d57;
+  --color-ouro: #c9a961;
+  --color-ouro-claro: #e8d6a5;
+  --color-texto: #f8f8f8;
 }
 
 :root {
-  --branco: #ffffff;
-  --petroleo: #0f4c81;
-  --azul: #eaf5ff;
-  --cinza: #f7f8fa;
-  --grafite: #202124;
-  --ouro: #c9a86a;
+  /* Preto e ouro. O site é escuro do topo ao rodapé; o --fundo é o piso e o
+     --superficie é o único degrau acima dele — é ele que separa card de
+     página sem precisar de borda.
 
-  /* o ouro puro não passa AA como texto. Duas variantes medidas:
-     --ouro-texto para fundos claros, --ouro-claro para fundos escuros. */
-  --ouro-texto: #6f5626;
-  --ouro-claro: #e0c88f;
+     O azul --petroleo saiu daqui. Não foi gosto: sobre o --fundo ele dá
+     1,97:1. Azul profundo sobre quase-preto é ilegível. */
+  --fundo: #1a1a1a;
+  --superficie: #272726;
+  --texto: #f8f8f8;
+
+  /* Três dourados, medidos sobre o --fundo:
+       --ouro-claro  12,1:1   caixa alta, rótulos
+       --ouro         7,74:1  fios, caixa alta
+       --ouro-base    5,63:1  fios que não devem gritar
+     Todos passam AA — o que não afrouxa a regra de uso do AGENTS.md, só
+     garante que nenhum vai falhar por contraste onde ela permite usá-lo.
+     O antigo --ouro-texto (#6f5626) existia para dar um tom da família que
+     passasse sobre fundo CLARO. Não há mais fundo claro. */
+  --ouro-base: #b08d57;
+  --ouro: #c9a961;
+  --ouro-claro: #e8d6a5;
+
+  /* Alfas do texto sobre o escuro.
+     Não são a inversão aritmética dos rgba(32,33,36,α) que existiam antes:
+     um fio branco a 22% grita onde um fio preto a 22% sussurra. Os valores
+     abaixo foram escolhidos pela leitura, não pela simetria. */
+  --texto-2: rgba(248, 248, 248, 0.72);
+  --texto-3: rgba(248, 248, 248, 0.5);
+  --linha: rgba(248, 248, 248, 0.12);
+  --linha-forte: rgba(248, 248, 248, 0.22);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-texto: 0.9s;
@@ -28,8 +47,6 @@
 
   --gutter: clamp(20px, 5vw, 96px);
   --max: 1440px;
-
-  --sombra: 0 1px 2px rgba(32, 33, 36, 0.04), 0 8px 24px rgba(32, 33, 36, 0.04);
 }
 
 *,
@@ -45,8 +62,8 @@ html {
 body {
   margin: 0;
   /* interpolado ao longo do scroll pelo FundoProgressivo */
-  background-color: var(--grafite);
-  color: var(--grafite);
+  background-color: var(--fundo);
+  color: var(--texto);
   font-family: var(--texto), system-ui, -apple-system, sans-serif;
   font-size: 1rem;
   line-height: 1.6;
@@ -149,8 +166,8 @@ button {
   left: -9999px;
   top: 0;
   z-index: 999;
-  background: var(--branco);
-  color: var(--grafite);
+  background: var(--texto);
+  color: var(--fundo);
   padding: 12px 20px;
   border-radius: 2px;
 }
@@ -160,8 +177,12 @@ button {
   top: 12px;
 }
 
+/* O anel de foco era --petroleo, que sobre o fundo novo dá 1,97:1 — um anel
+   de foco invisível. Em --texto ele dá 16,4:1.
+   Não é ouro de propósito: foco é acessibilidade e precisa do contraste
+   máximo, e um anel dourado de 2px brigaria com a regra do fio de 1px. */
 :focus-visible {
-  outline: 2px solid var(--petroleo);
+  outline: 2px solid var(--texto);
   outline-offset: 3px;
 }
 

@@ -22,37 +22,35 @@
   font-size: 1rem;
 }
 
+/* O primário era petróleo sólido. Sobre o fundo novo o petróleo dá 1,97:1 —
+   não é escolha, é impossibilidade.
+   Superfície com fio de ouro, porque ouro nunca é preenchimento (AGENTS.md).
+   Isso é mais fraco que o azul sólido que substitui; a compensação vem do
+   tamanho e da seta, não da cor. */
 .primario {
-  background: var(--petroleo);
-  color: var(--branco);
+  background: var(--superficie);
+  border: 1px solid var(--ouro);
+  color: var(--ouro-claro);
 }
 
 .primario:hover {
-  background: #0c3d68;
+  border-color: var(--ouro-claro);
+  background: #302f2d;
 }
 
-/* ghost padrão: traço escuro, para as seções de fundo claro */
+/* Ghost: fio claro, texto claro. Antes havia duas variantes — a padrão com
+   traço escuro para as seções claras, e .escuro para o filme. Não há mais
+   seções claras, então sobrou uma.
+   A prop `tom` continua existindo no Botao.tsx e continua aceita; ela só
+   deixou de mudar alguma coisa. Ver o comentário lá. */
 .ghost {
-  border: 1px solid rgba(32, 33, 36, 0.22);
-  color: var(--grafite);
+  border: 1px solid var(--linha-forte);
+  color: var(--texto);
 }
 
 .ghost:hover {
-  border-color: var(--grafite);
-}
-
-/* tom escuro: o botão vive sobre o filme ou sobre o grafite. Só o ghost
-   muda — o primário é petróleo com texto branco nos dois casos.
-   Nada de ouro preenchido aqui: a regra do AGENTS.md vale também para
-   estados de hover. */
-.escuro.ghost {
-  border-color: rgba(255, 255, 255, 0.34);
-  color: var(--branco);
-}
-
-.escuro.ghost:hover {
-  border-color: var(--branco);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--texto);
+  background: rgba(248, 248, 248, 0.08);
 }
 
 .seta {

@@ -1,7 +1,7 @@
 .secao {
   position: relative;
   z-index: 1;
-  background: var(--branco);
+  background: var(--superficie);
   min-height: 78vh;
   display: grid;
   place-items: center;
@@ -24,13 +24,13 @@
 .nota {
   margin-top: 22px;
   font-size: 0.84rem;
-  color: rgba(32, 33, 36, 0.5);
+  color: var(--texto-3);
 }
 
 .telefone {
   margin-top: 8px;
   font-size: 0.84rem;
-  color: rgba(32, 33, 36, 0.5);
+  color: var(--texto-3);
 }
 
 .telefone a {

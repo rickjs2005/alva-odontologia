@@ -46,7 +46,7 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--grafite);
+  color: var(--fundo);
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.25s linear;

@@ -6,20 +6,23 @@ type Props = {
   children: ReactNode;
   variante?: "primario" | "ghost";
   tamanho?: "medio" | "gigante";
-  tom?: "claro" | "escuro";
   externo?: boolean;
   magnetico?: boolean;
   seta?: boolean;
 };
 
 /** O magnetismo é aplicado pelo Cursor: ele procura [data-magnetico] e
- *  translada o elemento até 8px. Em touch e reduced-motion nada acontece. */
+ *  translada o elemento até 8px. Em touch e reduced-motion nada acontece.
+ *
+ *  Havia uma prop `tom` que trocava o ghost entre traço escuro (seções
+ *  claras) e traço claro (sobre o filme). Com a paleta escura não há mais
+ *  seções claras: sobrou um ghost só, e a prop foi removida em vez de
+ *  virar um no-op. */
 export default function Botao({
   href,
   children,
   variante = "primario",
   tamanho = "medio",
-  tom = "claro",
   externo = false,
   magnetico = true,
   seta = false,
@@ -27,9 +30,7 @@ export default function Botao({
   return (
     <a
       href={href}
-      className={`${s.botao} ${s[tamanho]} ${s[variante]} ${
-        tom === "escuro" ? s.escuro : ""
-      }`}
+      className={`${s.botao} ${s[tamanho]} ${s[variante]}`}
       {...(externo
         ? { target: "_blank", rel: "noopener noreferrer" }
         : {})}

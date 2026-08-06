@@ -28,7 +28,7 @@
   top: 50%;
   width: min(46ch, 42vw);
   opacity: 0;
-  color: var(--branco);
+  color: var(--texto);
   /* o rAF escreve transform, opacity e filter. Nada de transition aqui:
      interpolar por cima do scrub deixa o texto meio quadro atrasado. */
   will-change: transform, opacity, filter;
@@ -50,10 +50,10 @@
   pointer-events: none;
   background: radial-gradient(
     ellipse at center,
-    rgba(32, 33, 36, 0.72) 0%,
-    rgba(32, 33, 36, 0.5) 45%,
-    rgba(32, 33, 36, 0.2) 63%,
-    rgba(32, 33, 36, 0) 86%
+    rgba(26, 26, 26, 0.72) 0%,
+    rgba(26, 26, 26, 0.5) 45%,
+    rgba(26, 26, 26, 0.2) 63%,
+    rgba(26, 26, 26, 0) 86%
   );
 }
 
@@ -68,10 +68,10 @@
 .soLinha::before {
   background: radial-gradient(
     ellipse at center,
-    rgba(32, 33, 36, 0.36) 0%,
-    rgba(32, 33, 36, 0.24) 40%,
-    rgba(32, 33, 36, 0.08) 58%,
-    rgba(32, 33, 36, 0) 78%
+    rgba(26, 26, 26, 0.36) 0%,
+    rgba(26, 26, 26, 0.24) 40%,
+    rgba(26, 26, 26, 0.08) 58%,
+    rgba(26, 26, 26, 0) 78%
   );
 }
 

@@ -11,9 +11,13 @@ fictícia. Spec em `docs/superpowers/specs/`, plano em `docs/superpowers/plans/`
 
 Regras que não se negociam:
 
-- **Ouro (`#C9A86A`) só como fio de 1px ou caixa alta ≥14px peso 500.** Nunca
-  preenchimento, nunca botão sólido dourado. Em corpo de texto ele não passa
-  AA — para isso existe `--ouro-texto`.
+- **Ouro (`#C9A961`) só como fio de 1px ou caixa alta ≥14px peso 500.** Nunca
+  preenchimento, nunca botão sólido dourado. Sobre o `--fundo` os três
+  dourados passam AA — isso não libera o uso, só garante que onde a regra
+  permite não haverá falha de contraste.
+- **O site é escuro do topo ao rodapé.** `--fundo` (#1A1A1A) é o piso,
+  `--superficie` (#272726) é o único degrau acima dele. Não há fundo claro:
+  toda peça nova nasce sobre escuro.
 - **Sem Framer Motion.** GSAP + CSS apenas. A meta de Lighthouse ≥95 não
   sobrevive aos dois.
 - **Sem "excelência", "soluções personalizadas", "compromisso com o seu

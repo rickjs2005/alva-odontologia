@@ -114,10 +114,10 @@ export default function Hero() {
           </p>
 
           <div className={s.acoes}>
-            <Botao href={WHATSAPP_URL} externo>
+            <Botao href={WHATSAPP_URL} externo seta>
               Agendar Consulta
             </Botao>
-            <Botao href="#sobre" variante="ghost" tom="escuro">
+            <Botao href="#sobre" variante="ghost">
               Conhecer a Clínica
             </Botao>
           </div>

@@ -10,7 +10,7 @@
   place-content: center;
   justify-items: center;
   gap: 22px;
-  background: var(--grafite);
+  background: var(--fundo);
   animation: sai 0.5s var(--ease) 1.05s forwards;
 }
 
@@ -29,7 +29,7 @@
   letter-spacing: 0.32em;
   /* letter-spacing empurra tudo para a esquerda; compensa o último vão */
   text-indent: 0.32em;
-  color: var(--branco);
+  color: var(--texto);
   opacity: 0;
   /* as letras abrem enquanto aparecem: a marca se monta, não surge pronta */
   animation: abre 0.9s var(--ease) 0.08s forwards;
@@ -67,7 +67,7 @@
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--texto-3);
   opacity: 0;
   animation: entra 0.5s var(--ease) 0.4s forwards;
 }

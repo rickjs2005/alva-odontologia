@@ -16,8 +16,8 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#202124",
-          color: "#ffffff",
+          background: "#1a1a1a",
+          color: "#f8f8f8",
         }}
       >
         <div
@@ -33,7 +33,7 @@ export default function OpenGraphImage() {
         </div>
 
         <svg width="360" height="94" viewBox={VIEWBOX_ARCO} style={{ marginTop: 26 }}>
-          <path d={PATH_ARCO} fill="none" stroke="#c9a86a" strokeWidth={3} />
+          <path d={PATH_ARCO} fill="none" stroke="#c9a961" strokeWidth={3} />
         </svg>
 
         <div

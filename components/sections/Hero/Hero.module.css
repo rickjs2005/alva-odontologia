@@ -17,7 +17,7 @@
   display: flex;
   align-items: flex-end;
   padding-bottom: clamp(72px, 12vh, 140px);
-  color: var(--branco);
+  color: var(--texto);
 }
 
 .conteudo {
@@ -36,7 +36,7 @@
 
 .titulo {
   max-width: 15ch;
-  color: var(--branco);
+  color: var(--texto);
   text-wrap: balance;
 }
 
@@ -125,8 +125,8 @@
   height: 56px;
   background: linear-gradient(
     to bottom,
-    rgba(201, 168, 106, 0),
-    rgba(201, 168, 106, 0.9)
+    rgba(201, 169, 97, 0),
+    rgba(201, 169, 97, 0.9)
   );
 }
 

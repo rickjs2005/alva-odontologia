@@ -6,20 +6,24 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** "A alvorada": o fundo do documento clareia do grafite ao branco conforme
- *  a página desce. As seções são opacas por cima — isto só aparece nas
- *  bordas e nas transições, que é justamente onde o olho não deve conseguir
- *  apontar onde uma seção terminou. */
+/** "A luz subindo": o fundo do documento vai do quase-preto frio ao grafite
+ *  quente conforme a página desce. As seções são opacas por cima — isto só
+ *  aparece nas bordas e nas transições, que é justamente onde o olho não
+ *  deve conseguir apontar onde uma seção terminou.
+ *
+ *  Era "a alvorada", do grafite ao branco: o sol nascendo. Com a paleta
+ *  escura o percurso continua, mas dentro do escuro — é a luz da sala
+ *  subindo, não o dia.
+ *
+ *  Cinco paradas, não nove: a distância entre #1A1A1A e #272726 é curta, e
+ *  paradas demais numa rampa curta viram degraus de banda visível em vez de
+ *  transição. */
 const PARADAS = [
-  "#202124",
-  "#202124",
-  "#f7f8fa",
-  "#ffffff",
-  "#eaf5ff",
-  "#ffffff",
-  "#f7f8fa",
-  "#ffffff",
-  "#ffffff",
+  "#1a1a1a",
+  "#1a1a1a",
+  "#1f1f1e",
+  "#232322",
+  "#272726",
 ];
 
 export default function FundoProgressivo() {

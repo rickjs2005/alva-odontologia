@@ -1,8 +1,8 @@
 .secao {
   position: relative;
   z-index: 1;
-  background: var(--grafite);
-  color: var(--branco);
+  background: var(--superficie);
+  color: var(--texto);
   padding-block: clamp(88px, 14vh, 168px);
 }
 
@@ -17,7 +17,7 @@
 .titulo {
   margin-top: 20px;
   max-width: 16ch;
-  color: var(--branco);
+  color: var(--texto);
 }
 
 /* chips de caso */
@@ -47,7 +47,7 @@
 }
 
 .chip:hover {
-  color: var(--branco);
+  color: var(--texto);
   border-color: rgba(255, 255, 255, 0.45);
 }
 
@@ -88,7 +88,7 @@
   max-height: 78vh;
   overflow: hidden;
   border-radius: 4px;
-  background: var(--grafite);
+  background: var(--fundo);
   touch-action: pan-y;
   cursor: ew-resize;
   user-select: none;
@@ -133,7 +133,7 @@
   height: 46px;
   border-radius: 50%;
   border: 1px solid var(--ouro);
-  background: rgba(32, 33, 36, 0.55);
+  background: rgba(26, 26, 26, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   color: var(--ouro);
@@ -142,7 +142,7 @@
 }
 
 .comparador:focus-visible .puxador {
-  outline: 2px solid var(--branco);
+  outline: 2px solid var(--texto);
   outline-offset: 3px;
 }
 
@@ -221,7 +221,7 @@
   top: 18px;
   padding: 6px 14px;
   border-radius: 2px;
-  background: rgba(32, 33, 36, 0.6);
+  background: rgba(26, 26, 26, 0.6);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   font-size: 0.66rem;
