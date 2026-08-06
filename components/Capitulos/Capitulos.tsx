@@ -47,10 +47,10 @@ export default function Capitulos() {
     ];
     const raiz = document.documentElement;
     let raf = 0;
-    // null e não `true`: o primeiro quadro precisa escrever de qualquer jeito.
-    // Começando em `true`, um capítulo que nasce fora de cena nunca receberia
-    // `inert`, e os dois links do capítulo 07 ficariam alcançáveis por Tab
-    // desde o carregamento da página.
+    // null e não `true`: o primeiro quadro precisa escrever `inert`/
+    // `pointerEvents` de qualquer jeito, mesmo que o valor calculado seja o
+    // mesmo `true` com que o elemento já nasceu no JSX — é esse primeiro
+    // write que sincroniza o array de estado com o DOM.
     const inertes: (boolean | null)[] = blocos.map(() => null);
 
     const tick = () => {
@@ -125,7 +125,14 @@ export default function Capitulos() {
             key={c.nome}
             data-capitulo={plano}
             className={`${s.capitulo} ${c.lado === "dir" ? s.dir : s.esq}`}
-            style={{ transform: "translateY(-50%)" }}
+            // nasce inerte: se o rAF abaixo nunca rodar (mobile,
+            // reduced-motion, ou a viewport cruzando 1024px depois do mount,
+            // quando `isDesktop()` já foi lido uma vez só), os dois links do
+            // capítulo 07 continuam inalcançáveis por Tab para sempre. O rAF
+            // só desliga o `inert` quando o capítulo entra em cena — nunca é
+            // ele quem liga.
+            inert
+            style={{ transform: "translateY(-50%)", pointerEvents: "none" }}
           >
             <p className={s.linha}>{c.linha}</p>
             {c.apoio ? <p className={s.apoio}>{c.apoio}</p> : null}

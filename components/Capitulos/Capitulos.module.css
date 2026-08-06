@@ -72,9 +72,13 @@
 
 /* Os dois casos em que o rAF do Capitulos.tsx desiste na entrada: sem o
    filme andando, os capítulos ficariam parados em opacity 0 para sempre —
-   texto invisível e, pior, dois links de CTA alcançáveis por Tab.
-   As duas queries espelham exatamente os guardas do JS (isDesktop e
-   prefersReducedMotion). Se mudar um lado, mude o outro.
+   texto invisível. Isso aqui é só o lado visual do problema: a camada
+   inteira some para não deixar um bloco de texto morto plantado na tela.
+   A segurança de foco (nenhum link de CTA alcançável por Tab) NÃO depende
+   mais destas queries baterem com os guardas do JS — os capítulos já nascem
+   com o atributo `inert` no JSX (ver Capitulos.tsx), então mesmo que a
+   viewport cruze 1024px depois do mount (isDesktop() só é lido uma vez) e
+   o rAF nunca chegue a rodar, os links continuam inertes para sempre.
    O texto continua no HTML servido, que é o que os crawlers leem. */
 @media (max-width: 1023px) {
   .camada {
