@@ -44,14 +44,16 @@ Os scripts de verificação esperam um dev server em `http://localhost:3000`. Su
 | `lib/scenes.ts` | modificar — os 7 planos ganham `linha`, `apoio`, `lado`, `peso` | 1 |
 | `lib/world.ts` | modificar — ganha `heroProgresso` | 1 |
 | `scripts/verifica-capitulos.mjs` | criar — verificação visual dos 7 capítulos | 2 |
-| `components/Capitulos/Capitulos.tsx` | criar — camada de texto dos capítulos 02–07 | 3 |
-| `components/Capitulos/Capitulos.module.css` | criar | 3 |
-| `components/sections/Hero/Hero.tsx` | modificar — capítulo 01 no relógio dos planos, monta `Capitulos` | 4 |
-| `components/sections/Hero/Hero.module.css` | modificar — esconde sub/ações/indicadores no desktop | 4 |
-| `components/VideoRig/VideoRig.tsx` | modificar — ganha o scrim narrativo | 5 |
-| `components/VideoRig/VideoRig.module.css` | modificar — scrim direcional vira variável, entra o simétrico | 5 |
-| `components/Cursor/Cursor.tsx` | modificar — anel vira dente, sai o ponto | 6 |
-| `components/Cursor/Cursor.module.css` | modificar | 6 |
+| `components/ui/Botao/Botao.tsx` | modificar — ganha `tom="escuro"` para CTA sobre filme | 3 |
+| `components/ui/Botao/Botao.module.css` | modificar — variante ghost clara | 3 |
+| `components/Capitulos/Capitulos.tsx` | criar — camada de texto dos capítulos 02–07 | 4 |
+| `components/Capitulos/Capitulos.module.css` | criar | 4 |
+| `components/sections/Hero/Hero.tsx` | modificar — usa `Botao` (3), capítulo 01 no relógio dos planos, monta `Capitulos` (5) | 3, 5 |
+| `components/sections/Hero/Hero.module.css` | modificar — some o CSS de botão (3), esconde sub/ações/indicadores no desktop (5) | 3, 5 |
+| `components/VideoRig/VideoRig.tsx` | modificar — ganha o scrim narrativo | 6 |
+| `components/VideoRig/VideoRig.module.css` | modificar — scrim direcional vira variável, entra o simétrico | 6 |
+| `components/Cursor/Cursor.tsx` | modificar — anel vira dente, sai o ponto | 7 |
+| `components/Cursor/Cursor.module.css` | modificar | 7 |
 
 ---
 
@@ -370,17 +372,156 @@ git commit -m "test: script que verifica os sete capitulos contra o filme"
 
 ---
 
-### Task 3: O componente `Capitulos`
+### Task 3: `Botao` ganha tom escuro, e o Hero passa a usá-lo
+
+**Files:**
+- Modify: `components/ui/Botao/Botao.tsx`
+- Modify: `components/ui/Botao/Botao.module.css`
+- Modify: `components/sections/Hero/Hero.tsx:118-131` (o bloco `.acoes`)
+- Modify: `components/sections/Hero/Hero.module.css:84-115` (`.botao`, `.primario`, `.ghost`)
+
+**Interfaces:**
+- Consumes: nada das tasks anteriores.
+- Produces: `<Botao tom="escuro" variante="ghost">` — consumido pelo `Capitulos` na Task 4.
+
+O capítulo 07 traz de volta os dois CTAs do hero. Sem esta task, o
+`Capitulos.module.css` copiaria `.botao`/`.primario`/`.ghost` palavra por
+palavra do `Hero.module.css` — trinta linhas de CSS idênticas em dois
+arquivos.
+
+`components/ui/Botao` já existe e faz exatamente isso, mas só o `Cta` o usa, e
+o `.ghost` dele é traço escuro sobre fundo claro. Sobre o filme o traço
+precisa ser claro. Daí a prop nova.
+
+- [ ] **Step 1: Adicionar a variante clara em `Botao.module.css`**
+
+Substitua o bloco `.ghost` / `.ghost:hover` por:
+
+```css
+/* ghost padrão: traço escuro, para as seções de fundo claro */
+.ghost {
+  border: 1px solid rgba(32, 33, 36, 0.22);
+  color: var(--grafite);
+}
+
+.ghost:hover {
+  border-color: var(--grafite);
+}
+
+/* tom escuro: o botão vive sobre o filme ou sobre o grafite. Só o ghost
+   muda — o primário é petróleo com texto branco nos dois casos.
+   Nada de ouro preenchido aqui: a regra do AGENTS.md vale também para
+   estados de hover. */
+.escuro.ghost {
+  border-color: rgba(255, 255, 255, 0.34);
+  color: var(--branco);
+}
+
+.escuro.ghost:hover {
+  border-color: var(--branco);
+  background: rgba(255, 255, 255, 0.08);
+}
+```
+
+- [ ] **Step 2: Adicionar a prop em `Botao.tsx`**
+
+No type `Props`, depois de `tamanho`:
+
+```tsx
+  tom?: "claro" | "escuro";
+```
+
+Na desestruturação, depois de `tamanho = "medio",`:
+
+```tsx
+  tom = "claro",
+```
+
+E na `className`:
+
+```tsx
+      className={`${s.botao} ${s[tamanho]} ${s[variante]} ${
+        tom === "escuro" ? s.escuro : ""
+      }`}
+```
+
+- [ ] **Step 3: Trocar os `<a>` do Hero pelo `Botao`**
+
+Em `Hero.tsx`, o bloco `.acoes` (linhas 118–131) vira:
+
+```tsx
+          <div className={s.acoes}>
+            <Botao href={WHATSAPP_URL} externo>
+              Agendar Consulta
+            </Botao>
+            <Botao href="#sobre" variante="ghost" tom="escuro">
+              Conhecer a Clínica
+            </Botao>
+          </div>
+```
+
+Adicione o import no topo:
+
+```tsx
+import Botao from "@/components/ui/Botao/Botao";
+```
+
+`data-magnetico` não some: o `Botao` já o aplica por padrão (`magnetico = true`).
+
+- [ ] **Step 4: Apagar o CSS de botão do `Hero.module.css`**
+
+Remova os blocos `.botao`, `.primario`, `.primario:hover`, `.ghost` e
+`.ghost:hover` (linhas 84–115). `.acoes` **fica** — ele é o layout do par de
+botões, não o estilo deles.
+
+- [ ] **Step 5: Verificar**
+
+```bash
+npx tsc --noEmit
+npm run lint
+```
+
+Depois confirme que nada ficou órfão:
+
+```bash
+grep -n "botao\|primario\|ghost" components/sections/Hero/Hero.module.css
+```
+
+Esperado: nenhuma linha. Se aparecer alguma, ela ficou sem uso.
+
+- [ ] **Step 6: Olhar o hero no mobile, que é onde os botões aparecem**
+
+Com `npm run dev` rodando:
+
+```bash
+node scripts/verifica-scrub.mjs http://localhost:3000 390 844
+```
+
+Abra `.artifacts/scrub/scrub-0.png`. Os dois botões precisam estar
+exatamente como antes: "Agendar Consulta" em petróleo sólido, "Conhecer a
+Clínica" com traço branco de 1px. Se o traço do ghost virou escuro, o
+`tom="escuro"` não foi aplicado.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add components/ui/Botao components/sections/Hero
+git commit -m "refactor: o botao do hero vira ui/Botao com tom escuro"
+```
+
+---
+
+### Task 4: O componente `Capitulos`
 
 **Files:**
 - Create: `components/Capitulos/Capitulos.tsx`
 - Create: `components/Capitulos/Capitulos.module.css`
 
 **Interfaces:**
-- Consumes: `PLANOS` (Task 1), `world.heroProgresso` (Task 1), `WHATSAPP_URL` de `lib/clinica`, `isDesktop`/`prefersReducedMotion` de `lib/motion`.
-- Produces: `export default function Capitulos(): JSX.Element` — sem props. Renderiza `[data-capitulo="1"]`…`[data-capitulo="6"]`. Escreve as CSS vars `--scrim-dir` e `--scrim-narr` em `document.documentElement` (consumidas na Task 5).
+- Consumes: `PLANOS` (Task 1), `world.heroProgresso` (Task 1), `<Botao tom="escuro">` (Task 3), `WHATSAPP_URL` de `lib/clinica`, `isDesktop`/`prefersReducedMotion` de `lib/motion`.
+- Produces: `export default function Capitulos(): JSX.Element` — sem props. Renderiza `[data-capitulo="1"]`…`[data-capitulo="6"]`. Escreve as CSS vars `--scrim-dir` e `--scrim-narr` em `document.documentElement` (consumidas na Task 6).
 
-Nesta task o componente ainda **não é montado** — a Task 4 faz isso. Aqui ele só precisa compilar e passar no lint.
+Nesta task o componente ainda **não é montado** — a Task 5 faz isso. Aqui ele só precisa compilar e passar no lint.
 
 - [ ] **Step 1: Escrever `components/Capitulos/Capitulos.module.css`**
 
@@ -441,7 +582,8 @@ Nesta task o componente ainda **não é montado** — a Task 4 faz isso. Aqui el
   margin-left: auto;
 }
 
-/* capítulo 07: o CTA volta */
+/* capítulo 07: o CTA volta. Só o layout do par mora aqui — o estilo dos
+   botões é do components/ui/Botao (ver Task 3). */
 .acoes {
   display: flex;
   flex-wrap: wrap;
@@ -454,38 +596,6 @@ Nesta task o componente ainda **não é montado** — a Task 4 faz isso. Aqui el
 
 .dir .acoes {
   justify-content: flex-end;
-}
-
-.botao {
-  display: inline-flex;
-  align-items: center;
-  height: 56px;
-  padding-inline: 32px;
-  border-radius: 2px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transition: background-color 0.4s var(--ease), color 0.4s var(--ease),
-    border-color 0.4s var(--ease);
-}
-
-.primario {
-  background: var(--petroleo);
-  color: var(--branco);
-}
-
-.primario:hover {
-  background: #0c3d68;
-}
-
-.ghost {
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  color: var(--branco);
-}
-
-.ghost:hover {
-  border-color: var(--branco);
-  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Os dois casos em que o rAF do Capitulos.tsx desiste na entrada: sem o
@@ -517,6 +627,7 @@ import { PLANOS } from "@/lib/scenes";
 import { world } from "@/lib/world";
 import { prefersReducedMotion, isDesktop } from "@/lib/motion";
 import { WHATSAPP_URL } from "@/lib/clinica";
+import Botao from "@/components/ui/Botao/Botao";
 import s from "./Capitulos.module.css";
 
 /** O texto que corre em cima do filme. Um capítulo por plano, na janela
@@ -643,22 +754,12 @@ export default function Capitulos() {
 
             {ultimo ? (
               <div className={s.acoes}>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${s.botao} ${s.primario}`}
-                  data-magnetico
-                >
+                <Botao href={WHATSAPP_URL} externo>
                   Agendar Consulta
-                </a>
-                <a
-                  href="#sobre"
-                  className={`${s.botao} ${s.ghost}`}
-                  data-magnetico
-                >
+                </Botao>
+                <Botao href="#sobre" variante="ghost" tom="escuro">
                   Conhecer a Clínica
-                </a>
+                </Botao>
               </div>
             ) : null}
           </div>
@@ -689,19 +790,23 @@ git commit -m "feat: camada de capitulos que corre em cima do filme"
 
 ---
 
-### Task 4: Hero encolhe e monta os capítulos
+### Task 5: Hero encolhe e monta os capítulos
 
 **Files:**
-- Modify: `components/sections/Hero/Hero.tsx:34-77` (o `useEffect`), `:79-156` (o JSX)
+- Modify: `components/sections/Hero/Hero.tsx` (o `useEffect` e o JSX — atenção: a Task 3 já mexeu neste arquivo, então os números de linha do plano original não valem mais; localize pelo conteúdo)
 - Modify: `components/sections/Hero/Hero.module.css`
 
 **Interfaces:**
-- Consumes: `Capitulos` (Task 3), `PLANOS` e `world.heroProgresso` (Task 1).
+- Consumes: `Capitulos` (Task 4), `PLANOS` e `world.heroProgresso` (Task 1).
 - Produces: `world.heroProgresso` populado; `<Capitulos />` montado dentro da `<section data-secao="O filme">`.
 
 O `gsap.to` de saída da copy some. No lugar entra a mesma matemática de janela que os outros capítulos usam, aplicada dentro do `onUpdate` que já existe. Motivo: hoje a copy sai em 18% do curso e o capítulo 02 entra em 14,75% — os dois ficariam legíveis ao mesmo tempo. Amarrando a saída em `PLANOS[0].v1`, o repasse é limpo e não depende da altura da viewport.
 
-- [ ] **Step 1: Substituir o `useEffect` do Hero (linhas 34–77)**
+- [ ] **Step 1: Substituir o `useEffect` do Hero por inteiro**
+
+É o único `useEffect` do arquivo — o que cria o `ScrollTrigger` e os dois
+`gsap.to`. Substitua da linha `// scrub: alimenta o world` até o `}, []);`
+que fecha o efeito.
 
 ```tsx
   // scrub: alimenta o world, que o VideoRig persegue
@@ -749,11 +854,12 @@ import { world } from "@/lib/world";
 import { PLANOS } from "@/lib/scenes";
 import { prefersReducedMotion, isDesktop } from "@/lib/motion";
 import { WHATSAPP_URL } from "@/lib/clinica";
+import Botao from "@/components/ui/Botao/Botao";
 import Capitulos from "@/components/Capitulos/Capitulos";
 import s from "./Hero.module.css";
 ```
 
-`ScrollTrigger` e `gsap` continuam sendo usados (`gsap.utils.clamp`), mantenha os dois.
+`ScrollTrigger` e `gsap` continuam sendo usados (`gsap.utils.clamp`), mantenha os dois. O import do `Botao` já entrou na Task 3 — não duplique.
 
 - [ ] **Step 3: Montar `<Capitulos />` no JSX**
 
@@ -835,14 +941,14 @@ git commit -m "feat: o hero vira sete capitulos em vez de 500vh de filme mudo"
 
 ---
 
-### Task 5: O scrim para de sumir
+### Task 6: O scrim para de sumir
 
 **Files:**
 - Modify: `components/VideoRig/VideoRig.tsx:119`
 - Modify: `components/VideoRig/VideoRig.module.css:15-37`
 
 **Interfaces:**
-- Consumes: as CSS vars `--scrim-dir` e `--scrim-narr` que o `Capitulos` escreve em `document.documentElement` (Task 3).
+- Consumes: as CSS vars `--scrim-dir` e `--scrim-narr` que o `Capitulos` escreve em `document.documentElement` (Task 4).
 - Produces: nada para tasks seguintes.
 
 Hoje o `#alva-scrim` é direcional (pesado embaixo à esquerda, onde a copy vive) e ia a zero em 18% do curso. Com texto branco em cima do filme até o fim, isso quebra o contraste.
@@ -920,7 +1026,7 @@ Onde não passar, suba o `peso` daquele plano em `lib/scenes.ts` (máximo 1) e r
 grep -rn "alva-scrim" --include=*.tsx --include=*.css components app
 ```
 
-Esperado: só duas ocorrências — a declaração no `VideoRig.tsx` e nada mais. Se o `Hero.tsx` ainda aparecer, a Task 4 Step 1 não foi aplicada por inteiro.
+Esperado: só duas ocorrências — a declaração no `VideoRig.tsx` e nada mais. Se o `Hero.tsx` ainda aparecer, a Task 5 Step 1 não foi aplicada por inteiro.
 
 - [ ] **Step 5: Commit**
 
@@ -931,7 +1037,7 @@ git commit -m "fix: o scrim para de sumir aos 18% e vira simetrico nos capitulos
 
 ---
 
-### Task 6: O cursor vira dente
+### Task 7: O cursor vira dente
 
 **Files:**
 - Modify: `components/Cursor/Cursor.tsx`
@@ -1170,7 +1276,7 @@ git commit -m "feat: o cursor vira silhueta de incisivo"
 
 ---
 
-### Task 7: Fechamento — build, Lighthouse e a passagem completa
+### Task 8: Fechamento — build, Lighthouse e a passagem completa
 
 **Files:** nenhum, a menos que algo falhe.
 
@@ -1234,17 +1340,19 @@ git commit -m "docs: registra as notas de Lighthouse do hero narrativo"
 |---|---|
 | Os sete capítulos (tabela de copy) | 1 |
 | Nota editorial | 1 (comentário no `scenes.ts`) |
-| Primeira dobra limpa, CTA no 07 | 4 (CSS), 3 (o CTA) |
-| Ancoragem alternando + risco de colisão | 1 (`lado`), 4 Step 6 (calibração) |
-| `components/Capitulos/` | 3 |
-| `Hero` encolhe | 4 |
-| Scrim para de sumir | 5 |
-| Cursor de dente | 6 |
-| Mobile e reduced-motion | 3 (guarda no JS + `@media` no CSS), 4 Step 7 (verificação) |
-| Verificação por Playwright | 2, 4 Step 6, 5 Step 3, 6 Step 4, 7 |
-| Lighthouse ≥95 | 7 Step 3 |
-| Fora de escopo (vídeo, `Cta`, `Interludio`, `Arco`) | nenhuma task os toca; 7 Step 2 verifica a não-regressão |
+| Primeira dobra limpa, CTA no 07 | 5 (CSS), 4 (o CTA) |
+| Ancoragem alternando + risco de colisão | 1 (`lado`), 5 Step 6 (calibração) |
+| `components/Capitulos/` | 4 |
+| `Hero` encolhe | 5 |
+| Scrim para de sumir | 6 |
+| Cursor de dente | 7 |
+| Mobile e reduced-motion | 4 (guarda no JS + `@media` no CSS), 5 Step 7 (verificação) |
+| Verificação por Playwright | 2, 3 Step 6, 5 Step 6, 6 Step 3, 7 Step 4, 8 |
+| Lighthouse ≥95 | 8 Step 3 |
+| Fora de escopo (vídeo, `Cta`, `Interludio`, `Arco`) | nenhuma task os toca; 8 Step 2 verifica a não-regressão |
 
-**Nomes usados entre tasks.** `world.heroProgresso` (T1→T3, T4), `PLANOS[].lado/peso/linha/apoio` (T1→T3, T5), `[data-capitulo]` (T3→T2), `--scrim-dir`/`--scrim-narr` (T3→T5), `data-secao="O filme"` (existente→T2). Conferidos.
+**Nomes usados entre tasks.** `world.heroProgresso` (T1→T4, T5), `PLANOS[].lado/peso/linha/apoio` (T1→T4, T6), `[data-capitulo]` (T4→T2), `--scrim-dir`/`--scrim-narr` (T4→T6), `Botao tom="escuro"` (T3→T4, T5), `data-secao="O filme"` (existente→T2). Conferidos.
 
-**Desvio consciente do spec, registrado aqui:** o spec dizia "o scrim para de sumir". A Task 5 mantém o scrim direcional saindo depois do plano 01 e faz um scrim simétrico assumir no lugar. O motivo é a ancoragem alternada, decidida depois: um scrim de canto esquerdo estaria errado nos capítulos 03, 05 e 07. A intenção do spec — nunca haver texto branco sem escuridão embaixo — é cumprida.
+**Desvio consciente do spec, registrado aqui:** o spec dizia "o scrim para de sumir". A Task 6 mantém o scrim direcional saindo depois do plano 01 e faz um scrim simétrico assumir no lugar. O motivo é a ancoragem alternada, decidida depois: um scrim de canto esquerdo estaria errado nos capítulos 03, 05 e 07. A intenção do spec — nunca haver texto branco sem escuridão embaixo — é cumprida.
+
+**Task 3 entrou depois da primeira redação do plano.** O `Capitulos.module.css` repetiria trinta linhas de `.botao`/`.primario`/`.ghost` idênticas às do `Hero.module.css`. Como `components/ui/Botao` já existe e resolve exatamente isso, a extração virou task própria e as seguintes foram renumeradas.
