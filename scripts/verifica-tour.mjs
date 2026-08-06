@@ -67,52 +67,68 @@ ok(
   `top escalona 14px (achei ${degraus.join(", ") || "nada"})`,
 );
 
-// 2. comportamento: o anterior apaga quando o seguinte gruda
-const topoSecao = await pagina.evaluate(
-  () => document.querySelector("#tour").getBoundingClientRect().top + scrollY,
+// 2. os momentos de descanso: cada cartão grudado, antes do seguinte cobrir
+const repousos = await pagina.evaluate(() =>
+  [...document.querySelectorAll("#tour [data-card]")].map(
+    // 12svh é onde ele gruda; +40px entra um pouco no descanso
+    (c) => c.getBoundingClientRect().top + scrollY - innerHeight * 0.12 + 40,
+  ),
 );
-const alturaCard = await pagina.evaluate(() => {
-  const c = document.querySelector("[data-card]");
-  return c ? c.getBoundingClientRect().height : 0;
-});
 
-if (alturaCard > 0) {
-  const medir = async (y) => {
-    await pagina.evaluate((v) => scrollTo(0, v), y);
-    await pagina.waitForTimeout(900);
-    return pagina.evaluate(() =>
-      [...document.querySelectorAll("[data-card]")].map((c) => ({
+const irPara = async (y) => {
+  await pagina.evaluate((v) => scrollTo(0, v), Math.max(0, y));
+  await pagina.waitForTimeout(1000);
+};
+
+const estadoDosCards = () =>
+  pagina.evaluate(() =>
+    [...document.querySelectorAll("#tour [data-card]")].map((c) => {
+      const cap = c.querySelector("figcaption");
+      const r = cap.getBoundingClientRect();
+      return {
         opacidade: Number(getComputedStyle(c).opacity).toFixed(2),
         matriz: getComputedStyle(c).transform,
-      })),
+        // a legenda cabe na tela? o modo de falha da primeira volta foi ela
+        // viver no rodapé do cartão, coberta pelo seguinte antes de ser lida
+        legendaVisivel: r.top >= 0 && r.bottom <= innerHeight && r.height > 0,
+      };
+    }),
+  );
+
+if (repousos.length === 4) {
+  // no descanso de cada cartão, a legenda dele tem que estar legível na tela
+  for (const [i, y] of repousos.entries()) {
+    await irPara(y);
+    const estado = await estadoDosCards();
+    ok(
+      estado[i].legendaVisivel,
+      `legenda do cartão 0${i + 1} visível no descanso dele`,
     );
-  };
+    await pagina.screenshot({
+      path: `${SAIDA}/repouso-0${i + 1}.png`,
+    });
+  }
 
-  // posição em que o cartão 02 já cobriu o 01
-  const estado = await medir(topoSecao + alturaCard * 1.6);
+  // no descanso do 02, o 01 já recuou
+  await irPara(repousos[1]);
+  const cobertos = await estadoDosCards();
   ok(
-    Number(estado[0].opacidade) < 0.6,
-    `cartão 01 apagado quando o 02 sobe (opacidade ${estado[0].opacidade})`,
+    Number(cobertos[0].opacidade) < 0.6,
+    `cartão 01 apagado quando o 02 gruda (opacidade ${cobertos[0].opacidade})`,
   );
   ok(
-    estado[0].matriz !== "none",
-    `cartão 01 recebeu transform (achei ${estado[0].matriz})`,
+    cobertos[0].matriz !== "none",
+    `cartão 01 recebeu transform (achei ${cobertos[0].matriz})`,
   );
+
+  // e a transição no meio do caminho, que é onde a sobreposição se julga
+  await irPara((repousos[0] + repousos[1]) / 2);
+  await pagina.screenshot({ path: `${SAIDA}/transicao.png` });
 } else {
-  ok(false, "há cartão para medir (não achei nenhum)");
+  ok(false, `4 cartões para medir (achei ${repousos.length})`);
 }
 
-// 3. screenshots para olho humano
-const passo = alturaCard > 0 ? alturaCard : 700;
-const paradas = [0, 0.9, 1.8, 2.7];
-for (const [i, p] of paradas.entries()) {
-  await pagina.evaluate((v) => scrollTo(0, v), topoSecao + passo * p);
-  await pagina.waitForTimeout(1200);
-  await pagina.screenshot({
-    path: `${SAIDA}/pilha-${String(i + 1).padStart(2, "0")}.png`,
-  });
-}
-console.log(`\n${paradas.length} screenshots em ${SAIDA}/ — olhe um a um`);
+console.log(`\nscreenshots em ${SAIDA}/ — olhe um a um`);
 
 // 4. reduced-motion desmonta a pilha
 const p2 = await navegador.newPage({

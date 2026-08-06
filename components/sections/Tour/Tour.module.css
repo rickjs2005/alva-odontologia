@@ -12,12 +12,14 @@
   margin-bottom: clamp(44px, 7vh, 78px);
 }
 
-/* Sem gap: os cartões precisam se encostar para um cobrir o outro. O espaço
-   entre eles é o próprio scroll, não margem. */
+/* O gap é o tempo de leitura. Com os cartões encostados, o seguinte começa a
+   cobrir o anterior no instante em que ele gruda e ninguém termina de ler a
+   legenda — visto no screenshot, não deduzido. 30svh dá a cada cartão um
+   trecho de scroll sozinho no topo antes de ser coberto. */
 .pilha {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 30svh;
   /* respiro no fim, senão o último cartão descola antes de terminar de ser
      lido e o FAQ entra por baixo dele */
   padding-bottom: 18svh;

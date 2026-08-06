@@ -7,6 +7,11 @@
      deixa a borda do anterior aparecendo embaixo do seguinte */
   top: calc(12svh + var(--i) * 14px);
   display: grid;
+  /* A foto fica com a sobra, a legenda com o que precisa. O invertido
+     (auto 1fr) deixa uma faixa vazia embaixo do texto.
+     A legenda ser a primeira coisa que o cartão seguinte cobre não é
+     problema: quem resolve isso é o gap da pilha, que dá a cada cartão um
+     trecho sozinho no topo antes de começar a ser coberto. */
   grid-template-rows: 1fr auto;
   height: 74svh;
   margin: 0;
@@ -15,13 +20,17 @@
   background: var(--superficie);
   /* o fio de ouro mora aqui, com 1px, como manda a regra */
   border-top: 1px solid var(--ouro);
-  transform-origin: 50% 20%;
+  /* encolhe para a própria borda grudada, não para o meio */
+  transform-origin: 50% 0%;
   will-change: transform, opacity;
 }
 
 .foto {
   width: 100%;
   height: 100%;
+  /* sem isto o item de grid adota a altura intrínseca da imagem e estoura a
+     linha 1fr */
+  min-height: 0;
   object-fit: cover;
 }
 
