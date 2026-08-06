@@ -1,8 +1,14 @@
 /* camada de texto do filme: sticky dentro do hero, acima do vídeo e abaixo
-   da nav */
+   da nav.
+   margin-top: -100vh: a .camada é irmã do .palco (Hero.module.css) e os dois
+   ocupam 100vh em fluxo normal — sem a margem negativa, a posição estática
+   da .camada ficaria 100vh abaixo da do .palco e o sticky só engataria bem
+   depois do topo do hero, atrasando a entrada do capítulo 02 sozinho (os
+   demais já nascem depois desse ponto e não sentem o efeito). */
 .camada {
   position: sticky;
   top: 0;
+  margin-top: -100vh;
   height: 100vh;
   height: 100svh;
   pointer-events: none;
