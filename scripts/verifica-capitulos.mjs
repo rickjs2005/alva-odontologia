@@ -3,8 +3,24 @@
  *
  * Rola até o centro de cada janela de plano e reporta qual capítulo está
  * visível ali, com que opacidade, e se o vídeo chegou no frame certo.
- * Depois rola até cada fronteira e confere que nunca há dois capítulos
- * legíveis ao mesmo tempo.
+ * Depois checa cada fronteira em dois pontos:
+ *
+ * 1. No corte exato (`planos[i].v1`): por construção, os dois capítulos
+ *    estão em opacidade 0 ali (é o fim da rampa de saída de um e o começo
+ *    da rampa de entrada do outro). Confere que nunca há dois `> 0.5` ao
+ *    mesmo tempo — barato, mas não pega o bug que importa.
+ * 2. No MEIO da rampa de entrada do capítulo que chega (`v0 + largura *
+ *    RAMPA / 2`): é aí que o capítulo entrando passa por ~0.5 de opacidade
+ *    — e é exatamente aí que uma saída lenta demais do capítulo anterior
+ *    apareceria, ainda em ~0,25–0,3 de opacidade, sem nunca cruzar 0.5.
+ *    Amostrar só o corte deixa esse fantasma invisível: os dois nunca
+ *    ficam "sólidos" ao mesmo tempo, mas um texto fantasma por cima do
+ *    outro entrando é a colisão real que o relógio de saída desta task
+ *    existe para evitar. Por isso o limiar aqui é `> 0.05`, não `> 0.5`:
+ *    o ponto todo desta checagem é pegar resíduo, não sobreposição
+ *    "sólida". Não troque isto de volta para amostrar só o corte — o
+ *    corte por si só passa mesmo com a fórmula de saída errada (foi
+ *    assim que esse bug escapou da primeira versão deste script).
  *
  * O critério de aprovação é humano: as imagens em .artifacts/capitulos
  * precisam mostrar o frame certo E o texto certo, legível, sem cair em cima
@@ -19,6 +35,9 @@ const url = process.argv[2] ?? "http://localhost:3000";
 const largura = Number(process.argv[3] ?? 1440);
 const altura = Number(process.argv[4] ?? 900);
 const SAIDA = ".artifacts/capitulos";
+// mesmo valor de RAMPA em components/Capitulos/Capitulos.tsx — se um mudar
+// sem o outro, esta checagem passa a amostrar o ponto errado da curva
+const RAMPA = 0.18;
 
 // lib/scenes.ts é TypeScript e este script é .mjs puro — lê os números do
 // texto em vez de importar. Se o formato de scenes.ts mudar, isto quebra
@@ -110,7 +129,7 @@ for (let i = 0; i < planos.length; i++) {
   if (visiveis[0]) console.log(`            "${visiveis[0].texto}"`);
 }
 
-console.log("\n— fronteiras (nenhum par legível ao mesmo tempo) —");
+console.log("\n— fronteiras, no corte (nenhum par legível ao mesmo tempo) —");
 for (let i = 0; i < planos.length - 1; i++) {
   const r = await irPara(planos[i].v1, `fronteira ${i}/${i + 1}`);
   await pagina.screenshot({ path: `${SAIDA}/fronteira-${i}.png` });
@@ -119,6 +138,32 @@ for (let i = 0; i < planos.length - 1; i++) {
   console.log(
     `fronteira-${i}.png  legiveis=${legiveis.length} ` +
       `${legiveis.length > 1 ? "FALHA: dois capítulos ao mesmo tempo" : "ok"}`
+  );
+}
+
+console.log("\n— rampas, no meio da entrada (nada residual do capítulo anterior) —");
+for (let i = 0; i < planos.length - 1; i++) {
+  const entra = i + 1; // índice do capítulo que está entrando nesta rampa
+  const alvo = planos[entra];
+  const p = alvo.v0 + (alvo.v1 - alvo.v0) * (RAMPA / 2);
+  const r = await irPara(p, `rampa ${i}/${entra}`);
+  await pagina.screenshot({ path: `${SAIDA}/rampa-${i}.png` });
+
+  // no meio da própria rampa de entrada, o capítulo que chega está em
+  // ~0.5 — não faz parte do que estamos checando aqui. O que importa é
+  // que nenhum OUTRO capítulo (o que acabou de sair, inclusive) tenha
+  // sobrado acima de um resíduo desprezível
+  const fantasmas = r.caps.filter((c) => c.i !== entra && c.opacidade > 0.05);
+  if (fantasmas.length > 0) falhas++;
+  console.log(
+    `rampa-${i}.png  entra=${entra} ` +
+      `${
+        fantasmas.length > 0
+          ? `FALHA: fantasma [${fantasmas
+              .map((c) => `${c.i}=${c.opacidade.toFixed(3)}`)
+              .join(", ")}]`
+          : "ok"
+      }`
   );
 }
 
