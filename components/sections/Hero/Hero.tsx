@@ -4,9 +4,11 @@ import { Fragment, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { world } from "@/lib/world";
-import { EASE, DUR, prefersReducedMotion, isDesktop } from "@/lib/motion";
+import { PLANOS } from "@/lib/scenes";
+import { prefersReducedMotion, isDesktop } from "@/lib/motion";
 import { WHATSAPP_URL } from "@/lib/clinica";
 import Botao from "@/components/ui/Botao/Botao";
+import Capitulos from "@/components/Capitulos/Capitulos";
 import s from "./Hero.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -41,39 +43,28 @@ export default function Hero() {
       start: "top top",
       end: "bottom bottom",
       onUpdate: (self) => {
-        world.progresso = self.progress;
-      },
-    });
+        const p = self.progress;
+        world.progresso = p;
+        world.heroProgresso = p;
 
-    // a copy sai de cena cedo — depois dela o filme fica sozinho
-    const saida = gsap.to([palco.current, "#alva-scrim"], {
-      opacity: 0,
-      ease: "none",
-      scrollTrigger: {
-        trigger: node,
-        start: "top top",
-        end: "18% top",
-        scrub: 0.6,
-      },
-    });
+        // O capítulo 01 sai no relógio dos planos, não numa porcentagem do
+        // curso. Com "18% top" a copy ainda estaria legível quando o
+        // capítulo 02 entrasse (v0 = 0.1475) e os dois se sobreporiam.
+        // Aqui a saída começa em 55% da janela do plano 01 e termina
+        // exatamente no corte para o plano 02.
+        const { v1 } = PLANOS[0];
+        const saida = gsap.utils.clamp(0, 1, (p - v1 * 0.55) / (v1 * 0.45));
 
-    const sobe = gsap.to(palco.current, {
-      y: -40,
-      ease: "none",
-      scrollTrigger: {
-        trigger: node,
-        start: "top top",
-        end: "18% top",
-        scrub: 0.6,
+        const el = palco.current;
+        if (el) {
+          el.style.opacity = String(1 - saida);
+          el.style.transform = `translateY(${-saida * 40}px)`;
+        }
       },
     });
 
     return () => {
       st.kill();
-      saida.scrollTrigger?.kill();
-      saida.kill();
-      sobe.scrollTrigger?.kill();
-      sobe.kill();
     };
   }, []);
 
@@ -147,6 +138,8 @@ export default function Hero() {
           <span className={s.seta}>↓</span>
         </div>
       </div>
+
+      <Capitulos />
     </section>
   );
 }
