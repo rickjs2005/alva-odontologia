@@ -20,6 +20,29 @@
   will-change: transform, opacity, filter;
 }
 
+/* scrim local: reforça o contraste da linha de apoio nos frames onde o
+   fundo atrás do texto é claro (janela do consultório, cortina do detalhe)
+   sem escurecer o filme inteiro como o scrim narrativo faria. Sangra bem
+   além da caixa de texto para não ter borda perto das letras, e some bem
+   antes do próprio limite para não virar uma forma perceptível. O
+   `will-change` acima já cria contexto de empilhamento no `.capitulo`, então
+   `z-index: -1` basta para ficar atrás do texto (filhos em fluxo normal) e
+   ainda acima do vídeo/scrim de tela cheia (que vivem fora deste contexto). */
+.capitulo::before {
+  content: "";
+  position: absolute;
+  inset: -10% -14%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(32, 33, 36, 0.72) 0%,
+    rgba(32, 33, 36, 0.5) 45%,
+    rgba(32, 33, 36, 0.2) 63%,
+    rgba(32, 33, 36, 0) 86%
+  );
+}
+
 .esq {
   left: var(--gutter);
 }

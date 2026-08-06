@@ -42,7 +42,7 @@ export const PLANOS = [
     apoio:
       "Escaneamento, fotos e conversa. Nenhum procedimento no mesmo dia.",
     lado: "dir",
-    peso: 1,
+    peso: 0.75,
   },
   {
     nome: "O corredor",
@@ -53,7 +53,7 @@ export const PLANOS = [
     linha: "Onze pessoas trabalham aqui. Cinco pacientes passam por dia.",
     apoio: null,
     lado: "esq",
-    peso: 1,
+    peso: 0.6,
   },
   {
     nome: "O consultório",
@@ -62,7 +62,7 @@ export const PLANOS = [
     linha: "O escaneamento leva quatro minutos.",
     apoio: "A moldagem com massa saiu de cena. Ninguém sente falta.",
     lado: "dir",
-    peso: 1,
+    peso: 0.75,
   },
   {
     nome: "O detalhe",
@@ -72,7 +72,7 @@ export const PLANOS = [
     apoio:
       "O sorriso é desenhado em 3D e testado em provisório. Você aprova, aí começa.",
     lado: "esq",
-    peso: 1,
+    peso: 0.75,
   },
   {
     nome: "O sorriso",
