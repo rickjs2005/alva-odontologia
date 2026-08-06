@@ -117,6 +117,7 @@ export default function VideoRig() {
         poster="/video/poster.webp"
       />
       <div id="alva-scrim" className={s.scrim} />
+      <div className={s.scrimNarrativo} />
       <div className={s.vinheta} />
       <span className={s.hud}>
         plano<span ref={hud} className={s.plano}>01 · A porta</span>
