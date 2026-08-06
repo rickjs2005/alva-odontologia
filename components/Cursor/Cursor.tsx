@@ -4,12 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 import s from "./Cursor.module.css";
 
-/** Anel que persegue o ponteiro com lerp. Sobre [data-cursor] cresce e mostra
- *  o rótulo; sobre [data-magnetico] puxa o próprio elemento até 8px.
- *  Desligado em touch e em reduced-motion. */
+/** Incisivo central que persegue o ponteiro com lerp. Sobre [data-cursor]
+ *  cresce e mostra o rótulo na coroa; sobre [data-magnetico] puxa o próprio
+ *  elemento até 8px. Desligado em touch e em reduced-motion.
+ *
+ *  O ponto de precisão de 4px que existia junto com o anel saiu: com a forma
+ *  cheia ele virava sujeira. */
+const DENTE =
+  "M4 6 C4 2.5 7 1 12 1 C17 1 20 2.5 20 6 C20 11 18.4 15 17.2 20 " +
+  "C16.3 24 15.8 30 14.2 30 C12.9 30 12.5 25 12 22 C11.5 25 11.1 30 9.8 30 " +
+  "C8.2 30 7.7 24 6.8 20 C5.6 15 4 11 4 6 Z";
+
 export default function Cursor() {
-  const anel = useRef<HTMLDivElement>(null);
-  const ponto = useRef<HTMLDivElement>(null);
+  const dente = useRef<HTMLDivElement>(null);
   const [rotulo, setRotulo] = useState("");
   const [ativo, setAtivo] = useState(false);
 
@@ -61,11 +68,8 @@ export default function Cursor() {
       raf = requestAnimationFrame(tick);
       suave.x += (alvo.x - suave.x) * 0.15;
       suave.y += (alvo.y - suave.y) * 0.15;
-      if (anel.current) {
-        anel.current.style.transform = `translate3d(${suave.x}px, ${suave.y}px, 0)`;
-      }
-      if (ponto.current) {
-        ponto.current.style.transform = `translate3d(${alvo.x}px, ${alvo.y}px, 0)`;
+      if (dente.current) {
+        dente.current.style.transform = `translate3d(${suave.x}px, ${suave.y}px, 0)`;
       }
     };
 
@@ -84,23 +88,17 @@ export default function Cursor() {
   const expandido = rotulo.length > 0;
 
   return (
-    <>
-      <div
-        ref={anel}
-        aria-hidden
-        className={`${s.anel} ${ativo ? s.visivel : ""} ${
-          expandido ? s.expandido : ""
-        }`}
-      >
-        <span className={s.rotulo}>{rotulo}</span>
-      </div>
-      <div
-        ref={ponto}
-        aria-hidden
-        className={`${s.ponto} ${ativo ? s.visivel : ""} ${
-          expandido ? s.expandidoPonto : ""
-        }`}
-      />
-    </>
+    <div
+      ref={dente}
+      aria-hidden
+      className={`${s.dente} ${ativo ? s.visivel : ""} ${
+        expandido ? s.expandido : ""
+      }`}
+    >
+      <svg className={s.svg} viewBox="0 0 24 32">
+        <path d={DENTE} />
+      </svg>
+      <span className={s.rotulo}>{rotulo}</span>
+    </div>
   );
 }
