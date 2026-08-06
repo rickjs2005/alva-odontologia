@@ -6,6 +6,7 @@ type Props = {
   children: ReactNode;
   variante?: "primario" | "ghost";
   tamanho?: "medio" | "gigante";
+  tom?: "claro" | "escuro";
   externo?: boolean;
   magnetico?: boolean;
   seta?: boolean;
@@ -18,6 +19,7 @@ export default function Botao({
   children,
   variante = "primario",
   tamanho = "medio",
+  tom = "claro",
   externo = false,
   magnetico = true,
   seta = false,
@@ -25,7 +27,9 @@ export default function Botao({
   return (
     <a
       href={href}
-      className={`${s.botao} ${s[tamanho]} ${s[variante]}`}
+      className={`${s.botao} ${s[tamanho]} ${s[variante]} ${
+        tom === "escuro" ? s.escuro : ""
+      }`}
       {...(externo
         ? { target: "_blank", rel: "noopener noreferrer" }
         : {})}

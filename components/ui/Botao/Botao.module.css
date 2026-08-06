@@ -31,6 +31,7 @@
   background: #0c3d68;
 }
 
+/* ghost padrão: traço escuro, para as seções de fundo claro */
 .ghost {
   border: 1px solid rgba(32, 33, 36, 0.22);
   color: var(--grafite);
@@ -38,6 +39,20 @@
 
 .ghost:hover {
   border-color: var(--grafite);
+}
+
+/* tom escuro: o botão vive sobre o filme ou sobre o grafite. Só o ghost
+   muda — o primário é petróleo com texto branco nos dois casos.
+   Nada de ouro preenchido aqui: a regra do AGENTS.md vale também para
+   estados de hover. */
+.escuro.ghost {
+  border-color: rgba(255, 255, 255, 0.34);
+  color: var(--branco);
+}
+
+.escuro.ghost:hover {
+  border-color: var(--branco);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .seta {

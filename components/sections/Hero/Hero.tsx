@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { world } from "@/lib/world";
 import { EASE, DUR, prefersReducedMotion, isDesktop } from "@/lib/motion";
 import { WHATSAPP_URL } from "@/lib/clinica";
+import Botao from "@/components/ui/Botao/Botao";
 import s from "./Hero.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -116,18 +117,12 @@ export default function Hero() {
           </p>
 
           <div className={s.acoes}>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${s.botao} ${s.primario}`}
-              data-magnetico
-            >
+            <Botao href={WHATSAPP_URL} externo>
               Agendar Consulta
-            </a>
-            <a href="#sobre" className={`${s.botao} ${s.ghost}`} data-magnetico>
+            </Botao>
+            <Botao href="#sobre" variante="ghost" tom="escuro">
               Conhecer a Clínica
-            </a>
+            </Botao>
           </div>
 
           {/* Indicadores que sustentam a tese em vez de brigar com ela.
