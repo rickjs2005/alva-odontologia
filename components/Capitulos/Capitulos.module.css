@@ -1,0 +1,89 @@
+/* camada de texto do filme: sticky dentro do hero, acima do vídeo e abaixo
+   da nav */
+.camada {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.capitulo {
+  position: absolute;
+  top: 50%;
+  width: min(46ch, 42vw);
+  opacity: 0;
+  color: var(--branco);
+  /* o rAF escreve transform, opacity e filter. Nada de transition aqui:
+     interpolar por cima do scrub deixa o texto meio quadro atrasado. */
+  will-change: transform, opacity, filter;
+}
+
+.esq {
+  left: var(--gutter);
+}
+
+.dir {
+  right: var(--gutter);
+  text-align: right;
+}
+
+/* display serif, mas menor que o H1 — ele continua sendo o topo da
+   hierarquia. Sem scale na animação: em Cormorant o scale borra a serifa
+   durante a interpolação. */
+.linha {
+  margin: 0;
+  font-family: var(--display), "Cormorant Garamond", Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 4.2vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.apoio {
+  margin: clamp(16px, 2.2vh, 26px) 0 0;
+  max-width: 42ch;
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.dir .apoio {
+  margin-left: auto;
+}
+
+/* capítulo 07: o CTA volta. Só o layout do par mora aqui — o estilo dos
+   botões é do components/ui/Botao (ver Task 3). */
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(28px, 4vh, 44px);
+  /* liberado pelo rAF só enquanto o capítulo está legível — senão vira alvo
+     invisível sobre o filme inteiro */
+  pointer-events: inherit;
+}
+
+.dir .acoes {
+  justify-content: flex-end;
+}
+
+/* Os dois casos em que o rAF do Capitulos.tsx desiste na entrada: sem o
+   filme andando, os capítulos ficariam parados em opacity 0 para sempre —
+   texto invisível e, pior, dois links de CTA alcançáveis por Tab.
+   As duas queries espelham exatamente os guardas do JS (isDesktop e
+   prefersReducedMotion). Se mudar um lado, mude o outro.
+   O texto continua no HTML servido, que é o que os crawlers leem. */
+@media (max-width: 1023px) {
+  .camada {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camada {
+    display: none;
+  }
+}

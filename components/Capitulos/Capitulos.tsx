@@ -1,0 +1,148 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { PLANOS } from "@/lib/scenes";
+import { world } from "@/lib/world";
+import { prefersReducedMotion, isDesktop } from "@/lib/motion";
+import { WHATSAPP_URL } from "@/lib/clinica";
+import Botao from "@/components/ui/Botao/Botao";
+import s from "./Capitulos.module.css";
+
+/** O texto que corre em cima do filme. Um capítulo por plano, na janela
+ *  v0→v1 que o lib/scenes.ts define.
+ *
+ *  O capítulo 01 não está aqui: ele é o H1, vive no Hero por ser o elemento
+ *  de LCP e sai pelo mesmo relógio (ver Hero.tsx).
+ *
+ *  Lê world.heroProgresso num rAF em vez de criar um segundo ScrollTrigger
+ *  sobre o hero. Dois triggers no mesmo elemento com o Lenis no meio saem de
+ *  fase; e heroProgresso, diferente de progresso, não é reescrito pelo
+ *  Interlúdio mais adiante na página. */
+
+/** fração da janela de cada capítulo gasta entrando e saindo */
+const RAMPA = 0.18;
+/** o texto entra 20px abaixo e sai 20px acima. Em px, não em %: o teto de
+ *  24px do lib/motion vale aqui, e 20% da altura de um bloco de três linhas
+ *  passaria de 60px. */
+const DESLOC = 20;
+/** desfoque máximo nas pontas da rampa */
+const BORRAO = 6;
+/** escuridão mínima do scrim narrativo, mesmo nos respiros */
+const SCRIM_BASE = 0.34;
+
+const trava = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
+
+/** capítulos 02–07. O 01 é o H1 e mora no Hero. */
+const CAPITULOS = PLANOS.slice(1);
+
+export default function Capitulos() {
+  const camada = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const node = camada.current;
+    if (!node || prefersReducedMotion() || !isDesktop()) return;
+
+    const blocos = [
+      ...node.querySelectorAll<HTMLElement>("[data-capitulo]"),
+    ];
+    const raiz = document.documentElement;
+    let raf = 0;
+    // null e não `true`: o primeiro quadro precisa escrever de qualquer jeito.
+    // Começando em `true`, um capítulo que nasce fora de cena nunca receberia
+    // `inert`, e os dois links do capítulo 07 ficariam alcançáveis por Tab
+    // desde o carregamento da página.
+    const inertes: (boolean | null)[] = blocos.map(() => null);
+
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      const p = world.heroProgresso;
+
+      // o scrim segue o capítulo mais forte em cena; o 01 entra na conta
+      // porque o H1 também precisa de contraste
+      let forca = SCRIM_BASE;
+
+      PLANOS.forEach((plano, i) => {
+        const largura = plano.v1 - plano.v0;
+        const rampa = largura * RAMPA;
+        const dentro = trava((p - plano.v0) / rampa);
+        const fora = trava((p - (plano.v1 - rampa)) / rampa);
+        const op = dentro * (1 - fora);
+
+        if (op * plano.peso > forca) forca = op * plano.peso;
+
+        // o plano 0 é o H1: só contribui para o scrim, quem o anima é o Hero
+        if (i === 0) return;
+
+        const el = blocos[i - 1];
+        if (!el) return;
+
+        el.style.opacity = String(op);
+        // dois translateY: o primeiro em % centra o bloco na sua própria
+        // altura (o CSS o ancora em top: 50%), o segundo em px é o movimento.
+        // Somar os dois num valor só misturaria as unidades.
+        el.style.transform = `translateY(-50%) translateY(${
+          (1 - dentro) * DESLOC - fora * DESLOC
+        }px)`;
+        el.style.filter =
+          op > 0.995 ? "none" : `blur(${((1 - dentro) + fora) * BORRAO}px)`;
+
+        // fora de cena o capítulo não pode receber clique nem foco de
+        // teclado — senão o CTA do 07 vira alvo invisível sobre o filme
+        const inerte = op < 0.5;
+        if (inertes[i - 1] !== inerte) {
+          inertes[i - 1] = inerte;
+          el.toggleAttribute("inert", inerte);
+          el.style.pointerEvents = inerte ? "none" : "auto";
+        }
+      });
+
+      raiz.style.setProperty("--scrim-narr", forca.toFixed(3));
+      // o scrim direcional original serve só ao H1, embaixo à esquerda;
+      // depois do plano 01 ele sai e o simétrico assume
+      raiz.style.setProperty(
+        "--scrim-dir",
+        (1 - trava((p - PLANOS[0].v1 * 0.55) / (PLANOS[0].v1 * 0.45))).toFixed(3)
+      );
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      raiz.style.removeProperty("--scrim-narr");
+      raiz.style.removeProperty("--scrim-dir");
+    };
+  }, []);
+
+  return (
+    <div ref={camada} className={s.camada}>
+      {CAPITULOS.map((c, i) => {
+        // i é o índice dentro de CAPITULOS; o plano real é i + 1
+        const plano = i + 1;
+        const ultimo = plano === PLANOS.length - 1;
+
+        return (
+          <div
+            key={c.nome}
+            data-capitulo={plano}
+            className={`${s.capitulo} ${c.lado === "dir" ? s.dir : s.esq}`}
+            style={{ transform: "translateY(-50%)" }}
+          >
+            <p className={s.linha}>{c.linha}</p>
+            {c.apoio ? <p className={s.apoio}>{c.apoio}</p> : null}
+
+            {ultimo ? (
+              <div className={s.acoes}>
+                <Botao href={WHATSAPP_URL} externo>
+                  Agendar Consulta
+                </Botao>
+                <Botao href="#sobre" variante="ghost" tom="escuro">
+                  Conhecer a Clínica
+                </Botao>
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
