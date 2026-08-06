@@ -2,12 +2,20 @@
    renderizado — o mesmo motivo pelo qual o vídeo tem grão.
    Um elemento só, composto na GPU, sem JS e sem repaint.
 
-   soft-light, não overlay. Overlay empurra cada pixel para longe do meio:
-   sobre um fundo claro isso rende bem, mas sobre #1A1A1A ele só escurece o
-   que já é quase preto, e o grão some. soft-light continua clareando os
-   pixels claros do ruído sobre base escura, que é onde o grão vive agora.
-   A opacidade sobe de 0.34 para 0.5 pelo mesmo motivo: há menos alcance
-   disponível para o efeito quando a base é escura. */
+   soft-light, não overlay.
+   Overlay empurra cada pixel para longe do meio: sobre fundo claro rende
+   bem, mas sobre #1A1A1A só escurece o que já é quase preto, e o grão some.
+   soft-light continua modulando sobre base escura, que é onde o grão vive
+   agora. A opacidade sobe de 0.34 para 0.5 porque há menos alcance
+   disponível para o efeito quando a base é escura.
+
+   screen também texturiza e foi medido lado a lado, mas ele só clareia:
+   levanta o piso do preto e o campo perde profundidade. Numa paleta cujo
+   argumento é o preto, isso custa mais do que vale.
+
+   Custo: Lighthouse desktop, build de produção, três rodadas cada —
+   soft-light 99/100/100 com TBT 20ms, screen 100/100/100 com TBT 10ms.
+   Empate prático; a decisão foi visual, não de performance. */
 .grao {
   position: fixed;
   inset: -50%;
