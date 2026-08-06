@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 import s from "./Cursor.module.css";
 
-/** Incisivo central que persegue o ponteiro com lerp. Sobre [data-cursor]
+/** Silhueta de molar que persegue o ponteiro com lerp. Sobre [data-cursor]
  *  cresce e mostra o rótulo na coroa; sobre [data-magnetico] puxa o próprio
  *  elemento até 8px. Desligado em touch e em reduced-motion.
  *
