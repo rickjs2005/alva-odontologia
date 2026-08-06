@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { PLANOS } from "@/lib/scenes";
+import { PLANOS, saidaDoH1 } from "@/lib/scenes";
 import { world } from "@/lib/world";
 import { prefersReducedMotion, isDesktop } from "@/lib/motion";
 import { WHATSAPP_URL } from "@/lib/clinica";
@@ -52,6 +52,16 @@ export default function Capitulos() {
     // mesmo `true` com que o elemento já nasceu no JSX — é esse primeiro
     // write que sincroniza o array de estado com o DOM.
     const inertes: (boolean | null)[] = blocos.map(() => null);
+    // mesmo padrão do HUD em VideoRig.tsx: custom property na raiz invalida
+    // estilo da página inteira, e depois do hero (p travado em 1) o rAF
+    // reescreveria os dois valores 60×/s para sempre sem isto.
+    let scrimNarrAnterior = "";
+    let scrimDirAnterior = "";
+
+    // rampa de saída do último plano (07): mesma faixa usada abaixo para
+    // levar o scrim narrativo a 0.
+    const ultimo = PLANOS[PLANOS.length - 1];
+    const rampaFinal = (ultimo.v1 - ultimo.v0) * RAMPA;
 
     const tick = () => {
       raf = requestAnimationFrame(tick);
@@ -76,7 +86,11 @@ export default function Capitulos() {
         const el = blocos[i - 1];
         if (!el) return;
 
-        el.style.opacity = String(op);
+        // toFixed(4) e não String(op): op passa por zero via subtração de
+        // ponto flutuante, e String(2.1e-15) emite notação científica, que
+        // opacity não entende. toFixed também torna alcançável o atalho
+        // `op > 0.995 → filter: none` logo abaixo, hoje quase nunca batido.
+        el.style.opacity = op.toFixed(4);
         // dois translateY: o primeiro em % centra o bloco na sua própria
         // altura (o CSS o ancora em top: 50%), o segundo em px é o movimento.
         // Somar os dois num valor só misturaria as unidades.
@@ -96,13 +110,30 @@ export default function Capitulos() {
         }
       });
 
-      raiz.style.setProperty("--scrim-narr", forca.toFixed(3));
+      // o scrim existe para dar contraste ao texto por cima do filme; sem
+      // capítulo em cena ele só escurece o filme à toa. p trava em 1 assim
+      // que o hero termina (ScrollTrigger não deixa passar), e o Interlúdio
+      // logo depois é o filme sozinho — precisa dele limpo. Decai para 0 na
+      // mesma rampa de saída do capítulo 07 para não haver salto: o scrim
+      // some junto com o último texto, que é quando ele deixa de ter função.
+      const saidaFinal = trava((p - (ultimo.v1 - rampaFinal)) / rampaFinal);
+      forca *= 1 - saidaFinal;
+
+      const forcaTxt = forca.toFixed(3);
+      if (forcaTxt !== scrimNarrAnterior) {
+        scrimNarrAnterior = forcaTxt;
+        raiz.style.setProperty("--scrim-narr", forcaTxt);
+      }
+
       // o scrim direcional original serve só ao H1, embaixo à esquerda;
-      // depois do plano 01 ele sai e o simétrico assume
-      raiz.style.setProperty(
-        "--scrim-dir",
-        (1 - trava((p - PLANOS[0].v1 * 0.55) / (PLANOS[0].v1 * 0.45))).toFixed(3)
-      );
+      // depois do plano 01 ele sai e o simétrico assume. saidaDoH1 mora em
+      // lib/scenes.ts porque Hero.tsx usa o mesmo número para animar o H1
+      // para fora — os dois têm que andar juntos.
+      const dirTxt = (1 - saidaDoH1(p)).toFixed(3);
+      if (dirTxt !== scrimDirAnterior) {
+        scrimDirAnterior = dirTxt;
+        raiz.style.setProperty("--scrim-dir", dirTxt);
+      }
     };
 
     raf = requestAnimationFrame(tick);
@@ -124,8 +155,8 @@ export default function Capitulos() {
           <div
             key={c.nome}
             data-capitulo={plano}
-            className={`${s.capitulo} ${c.lado === "dir" ? s.dir : s.esq} ${
-              c.apoio ? "" : s.soLinha
+            className={`${s.capitulo} ${c.lado === "dir" ? s.dir : s.esq}${
+              c.apoio ? "" : ` ${s.soLinha}`
             }`}
             // nasce inerte: se o rAF abaixo nunca rodar (mobile,
             // reduced-motion, ou a viewport cruzando 1024px depois do mount,

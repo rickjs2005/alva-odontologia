@@ -12,7 +12,9 @@
  *  verificação, nunca lendo o código.
  *
  *  `peso` é quanta escuridão o texto daquele plano precisa para passar AA.
- *  Os respiros (01 depois da saída do H1, e 04) pedem menos. */
+ *  Os respiros (01 depois da saída do H1, e 04) pedem menos. `SCRIM_BASE`
+ *  (0.34, em Capitulos.tsx) é um piso: `peso` abaixo disso não muda mais
+ *  nada, e o 0.4 de "O corredor" já está quase nele. */
 export const PLANOS = [
   {
     nome: "A porta",
@@ -88,4 +90,16 @@ export const PLANOS = [
 export const planoEm = (t: number) => {
   const i = PLANOS.findIndex((p) => t >= p.v0 && t < p.v1);
   return i < 0 ? PLANOS.length - 1 : i;
+};
+
+/** Fração de saída do capítulo 01 (o H1), 0→1. Hero.tsx usa isto para animar
+ *  o H1 para fora; Capitulos.tsx usa o mesmo número para apagar o scrim
+ *  direcional que existe só para servir de contraste ao H1. Os dois têm que
+ *  andar no mesmo relógio — um anima o texto, o outro apaga o fundo atrás
+ *  dele, e calculados em separado eles dessincronizam em silêncio na
+ *  primeira vez que alguém mexe num dos dois sem lembrar do outro. */
+export const saidaDoH1 = (p: number) => {
+  const { v1 } = PLANOS[0];
+  const n = (p - v1 * 0.55) / (v1 * 0.45);
+  return n < 0 ? 0 : n > 1 ? 1 : n;
 };
