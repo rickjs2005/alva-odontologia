@@ -38,12 +38,15 @@
   text-wrap: balance;
 }
 
-/* cada palavra numa máscara de overflow; o <i> sobe de baixo */
+/* Cada palavra numa máscara de overflow; o <i> sobe de baixo.
+   Sem padding-right: o espaço entre palavras é um nó de texto real emitido
+   fora da máscara pelo Hero.tsx — mesmo motivo documentado lá e em
+   globals.css. Manter os dois somaria o padding ao espaço e abriria demais
+   o H1. */
 .palavra {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  padding-right: 0.22em;
 }
 
 .palavra > i {

@@ -121,12 +121,15 @@ button {
   padding-inline: var(--gutter);
 }
 
-/* máscara por palavra usada pelo Reveal modo="palavras" */
+/* Máscara por palavra usada pelo Reveal modo="palavras".
+   Sem padding-right: o espaço entre palavras é um nó de texto real que o
+   Reveal emite FORA da máscara. Padding desenhava o espaçamento sem colocá-lo
+   no texto — o H1 chegava grudado ao leitor de tela, ao copiar-colar e ao
+   buscador. Ver o comentário em Reveal.tsx. */
 .reveal-palavra {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  padding-right: 0.24em;
 }
 
 .sr-only {

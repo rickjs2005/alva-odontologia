@@ -11,8 +11,14 @@ export default function Cta() {
           <span className="eyebrow">Agende</span>
         </Reveal>
 
+        {/* "Pronto para transformar seu sorriso?" era a mesma família de frase
+            que o AGENTS.md proíbe, em Cormorant a 9rem ocupando a tela inteira
+            — o segundo momento de maior peso visual do site dizendo o que
+            qualquer clínica diria. A troca é por um fato, e é o fato que
+            desarma quem hesita em marcar: a primeira ida não tem procedimento
+            nenhum. */}
         <Reveal as="h2" modo="palavras" delay={0.06} className={s.titulo}>
-          Pronto para transformar seu sorriso?
+          A primeira consulta é uma conversa.
         </Reveal>
 
         <Reveal delay={0.18}>

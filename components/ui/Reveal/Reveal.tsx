@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ElementType, type ReactNode } from "react";
+import { Fragment, useEffect, useRef, type ElementType, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { EASE, DUR, prefersReducedMotion } from "@/lib/motion";
@@ -94,14 +94,30 @@ export default function Reveal({
     };
   }, [modo, delay]);
 
-  // no modo palavras o texto é fatiado aqui, no servidor: sem JS o título
-  // aparece inteiro e sem flash
+  /* No modo palavras o texto é fatiado aqui, no servidor: sem JS o título
+     aparece inteiro e sem flash.
+   *
+   * O espaço entre as palavras é um nó de texto REAL, fora da máscara — não
+   * um `padding-right` na .reveal-palavra. A versão anterior desenhava o
+   * espaçamento com padding, e o resultado é que o texto ficava certo na tela
+   * e grudado em toda camada que não é pixel: `textContent` do H1 saía
+   * "Seusorrisomerecetecnologia,precisãoecuidado.", que é o que o leitor de
+   * tela anuncia, o que o copiar-colar entrega e o que o buscador indexa como
+   * H1. O Lighthouse dá 100 em acessibilidade nos dois casos, porque ele não
+   * testa espaço entre spans.
+   *
+   * O espaço fica FORA do <span> mascarado de propósito: dentro, o
+   * `overflow: hidden` da máscara o cortaria junto com a palavra na animação
+   * de entrada. */
   const conteudo =
     modo === "palavras" && typeof children === "string"
-      ? children.split(" ").map((p, i) => (
-          <span key={`${p}-${i}`} data-palavra className={CLASSE_PALAVRA}>
-            <i style={{ fontStyle: "normal", display: "inline-block" }}>{p}</i>
-          </span>
+      ? children.split(" ").map((p, i, todas) => (
+          <Fragment key={`${p}-${i}`}>
+            <span data-palavra className={CLASSE_PALAVRA}>
+              <i style={{ fontStyle: "normal", display: "inline-block" }}>{p}</i>
+            </span>
+            {i < todas.length - 1 ? " " : null}
+          </Fragment>
         ))
       : children;
 
