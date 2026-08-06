@@ -164,8 +164,12 @@
    eyebrow, o H1 e a seta; o CTA volta em tela cheia no capítulo 07 e o
    "Agendar" da navbar cobre o intervalo.
    Estes três continuam no HTML de propósito: são o que o mobile mostra, onde
-   o filme não anda. */
-@media (min-width: 1024px) {
+   o filme não anda.
+   Isto só vale quando o filme realmente anda: o guarda em JS que liga o
+   scrub é `isDesktop() && !prefersReducedMotion()`, dois critérios. Gatear
+   esta regra só por largura escondia a dobra inteira num desktop com
+   reduced-motion — vídeo parado no poster e nenhum CTA no hero. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   .sub,
   .acoes,
   .indicadores {
