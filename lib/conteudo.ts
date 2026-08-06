@@ -175,13 +175,35 @@ export const CASOS = [
   },
 ] as const;
 
+/** Quatro cômodos, não seis. Instrumental é um close e não uma sala; Fachada
+ *  colide com o plano 01 do hero, que já abre na porta.
+ *
+ *  Os textos falam do espaço — luz, orientação, material. O processo é
+ *  assunto do hero (lib/scenes.ts). Nenhuma frase se repete entre os dois. */
 export const TOUR = [
-  { src: "/img/tour-01.webp", legenda: "Recepção", area: "a" },
-  { src: "/img/tour-02.webp", legenda: "Sala de espera", area: "b" },
-  { src: "/img/tour-03.webp", legenda: "Consultório 1", area: "c" },
-  { src: "/img/tour-04.webp", legenda: "Sala do escâner", area: "d" },
-  { src: "/img/tour-05.webp", legenda: "Instrumental", area: "e" },
-  { src: "/img/tour-06.webp", legenda: "Fachada", area: "f" },
+  {
+    src: "/img/tour-01.webp",
+    titulo: "Recepção",
+    texto: "Seis poltronas. Raramente duas ocupadas ao mesmo tempo.",
+  },
+  {
+    src: "/img/tour-02.webp",
+    titulo: "Sala de espera",
+    texto:
+      "A luz entra pelo leste. Às nove da manhã ela chega no chão de tábua corrida.",
+  },
+  {
+    src: "/img/tour-03.webp",
+    titulo: "Consultório 1",
+    texto:
+      "A cadeira fica de costas para a janela. Você olha para a árvore, não para o refletor.",
+  },
+  {
+    src: "/img/tour-04.webp",
+    titulo: "Sala do escâner",
+    texto:
+      "A única sala sem janela. Escuro por projeto — a tela precisa ser a coisa mais clara do ambiente.",
+  },
 ] as const;
 
 export const FAQ = [
