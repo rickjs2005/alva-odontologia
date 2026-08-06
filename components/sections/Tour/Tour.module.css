@@ -1,7 +1,8 @@
+/* A seção volta para --fundo: quem é --superficie agora é o cartão. */
 .secao {
   position: relative;
   z-index: 1;
-  background: var(--superficie);
+  background: var(--fundo);
   padding-block: clamp(88px, 14vh, 168px);
 }
 
@@ -11,144 +12,20 @@
   margin-bottom: clamp(44px, 7vh, 78px);
 }
 
-/* proporções desiguais de propósito — grade de revista, não galeria de tema */
-.grade {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: 12vw;
-  gap: 16px;
-}
-
-.a {
-  grid-column: span 2;
-  grid-row: span 3;
-}
-.b {
-  grid-column: span 4;
-  grid-row: span 2;
-}
-.c {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-.d {
-  grid-column: span 2;
-  grid-row: span 3;
-}
-.e {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-.f {
-  grid-column: span 4;
-  grid-row: span 2;
-}
-
-.item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 4px;
-  background: var(--fundo);
-  display: block;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
-}
-
-/* os vizinhos recuam quando um é escolhido — o olho vai onde você aponta */
-@media (hover: hover) {
-  .grade:hover .item {
-    opacity: 0.42;
-    transform: scale(0.985);
-  }
-
-  .grade .item:hover,
-  .grade .item:focus-visible {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.foto {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1.2s var(--ease);
-}
-
-.item:hover .foto,
-.item:focus-visible .foto {
-  transform: scale(1.06);
-}
-
-.veu {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(26, 26, 26, 0.55) 0%,
-    rgba(26, 26, 26, 0) 42%
-  );
-  opacity: 0;
-  transition: opacity 0.6s var(--ease);
-}
-
-.item:hover .veu,
-.item:focus-visible .veu {
-  opacity: 1;
-}
-
-.legenda {
-  position: absolute;
-  left: 18px;
-  bottom: 16px;
-  overflow: hidden;
-  font-size: 0.76rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--texto);
-}
-
-.legenda > span {
-  display: block;
-  transform: translateY(110%);
-  transition: transform 0.6s var(--ease);
-}
-
-.item:hover .legenda > span,
-.item:focus-visible .legenda > span {
-  transform: translateY(0);
-}
-
-@media (max-width: 899px) {
-  .grade {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 34vw;
-    gap: 12px;
-    /* sem dense, os itens de 1 coluna que caem antes de um de 2 deixam meia
-       linha vazia — furo visível em tablet */
-    grid-auto-flow: dense;
-  }
-  .a,
-  .b,
-  .c,
-  .d,
-  .e,
-  .f {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-  .b,
-  .f {
-    grid-column: span 2;
-  }
+/* Sem gap: os cartões precisam se encostar para um cobrir o outro. O espaço
+   entre eles é o próprio scroll, não margem. */
+.pilha {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* respiro no fim, senão o último cartão descola antes de terminar de ser
+     lido e o FAQ entra por baixo dele */
+  padding-bottom: 18svh;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .legenda > span {
-    transform: none;
-  }
-  .veu {
-    opacity: 1;
+  .pilha {
+    gap: clamp(24px, 5vh, 56px);
+    padding-bottom: 0;
   }
 }

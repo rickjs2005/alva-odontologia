@@ -1,22 +1,9 @@
-"use client";
-
-import Image from "next/image";
-import { useRef, useState } from "react";
 import Reveal from "@/components/ui/Reveal/Reveal";
 import { TOUR } from "@/lib/conteudo";
-import Lightbox from "./Lightbox";
+import CardTour from "./CardTour/CardTour";
 import s from "./Tour.module.css";
 
 export default function Tour() {
-  const [aberto, setAberto] = useState<number | null>(null);
-  const origem = useRef<HTMLButtonElement | null>(null);
-
-  const fechar = () => {
-    setAberto(null);
-    // devolve o foco ao thumbnail de onde saiu
-    origem.current?.focus();
-  };
-
   return (
     <section id="tour" className={s.secao} data-secao="Tour">
       <div className="faixa">
@@ -27,44 +14,19 @@ export default function Tour() {
           Madeira, vidro e luz da manhã.
         </Reveal>
 
-        <div className={s.grade}>
-          {TOUR.map((f, i) => (
-            <button
-              key={f.src}
-              type="button"
-              className={`${s.item} ${s[f.area]}`}
-              data-cursor="ver"
-              onClick={(e) => {
-                origem.current = e.currentTarget;
-                setAberto(i);
-              }}
-              aria-label={`Ampliar foto: ${f.legenda}`}
-            >
-              <Image
-                className={s.foto}
-                src={f.src}
-                alt={f.legenda}
-                width={1400}
-                height={1400}
-                sizes="(max-width: 899px) 50vw, 33vw"
-              />
-              <span className={s.veu} aria-hidden />
-              <span className={s.legenda} aria-hidden>
-                <span>{f.legenda}</span>
-              </span>
-            </button>
+        <div className={s.pilha}>
+          {TOUR.map((c, i) => (
+            <CardTour
+              key={c.src}
+              src={c.src}
+              titulo={c.titulo}
+              texto={c.texto}
+              indice={i}
+              prioridade={false}
+            />
           ))}
         </div>
       </div>
-
-      {aberto !== null && (
-        <Lightbox
-          fotos={TOUR}
-          indice={aberto}
-          onFechar={fechar}
-          onNavegar={setAberto}
-        />
-      )}
     </section>
   );
 }
