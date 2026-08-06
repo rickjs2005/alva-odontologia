@@ -126,12 +126,6 @@
   animation: surge 0.9s var(--ease) 1.05s forwards;
 }
 
-.estrelas {
-  color: var(--ouro);
-  letter-spacing: 0.16em;
-  font-size: 0.78rem;
-}
-
 .sep {
   width: 3px;
   height: 3px;
