@@ -51,3 +51,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# local or generated files (not versioned)
+assets/teste/
